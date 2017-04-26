@@ -13,16 +13,16 @@ namespace YoungGuns.WebApi.Controllers
     public class FieldController : ApiController
     {
         [HttpGet]
-        public string Get()
+        public IHttpActionResult Get()
         {
-            return "Hello World";
+            return Ok("Hello World");
         }
 
         [HttpPost]
-        public async Task<IHttpActionResult> Post([FromBody]string form_id, [FromBody]string form_name, [FromBody]List<FieldDto> form_fields)
+        public IHttpActionResult Post([FromBody]FormDto form)
         {
-            string response = "Received fields for form " + form_name + " " + form_id + ". Fields are ";
-            foreach (FieldDto field in form_fields)
+            string response = "Received fields for form " + form.form_name + " " + form.form_id + ". Fields are ";
+            foreach (FieldDto field in form.form_fields)
             {
                 response += field.field_title + " ";
             }
