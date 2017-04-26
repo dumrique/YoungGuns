@@ -56,12 +56,15 @@ angularApp.service('FormService', function FormService($http) {
             return $http.get(baseurl + '/api/allforms');
         },
         submit: function(form) {         
-            for(var i=0; i < form.form_fields.length; i++) {
-                var field = form.form_fields[i];       
+            for(var i=0; i < form.taxsystem_fields.length; i++) {
+                var field = form.taxsystem_fields[i];       
                 field.type = field.field_calculation ? 'calc' : 'info';
             }
-
-            return $http.post(baseurl + '/api/taxsystem', form);
+           //console.log('submitting form', form);
+            return $http.post(baseurl + '/api/taxsystem', form).then(function(response) {
+                console.log(response.data);
+                return response.data;
+            })
         }
     };
 });
