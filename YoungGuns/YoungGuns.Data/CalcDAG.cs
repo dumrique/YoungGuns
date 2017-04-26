@@ -89,7 +89,7 @@ namespace YoungGuns.Data
         {
             CloudTable table = await GetCloudTableStorage();
             // Construct the query operation for the field list for the given field
-            TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>(returnId + version.ToString(), fieldId.ToString());
+            TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>(TaxSystem.Name, fieldId.ToString());
 
             // Execute the retrieve operation.
             TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
@@ -105,7 +105,7 @@ namespace YoungGuns.Data
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
             // Retrieve a reference to the table.
-            CloudTable table = tableClient.GetTableReference(TaxSystem.Name);
+            CloudTable table = tableClient.GetTableReference("TaxSystemAdjacencyLists");
 
             // Create the table if it doesn't exist.
             await table.CreateIfNotExistsAsync();
