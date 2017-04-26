@@ -61,7 +61,7 @@ namespace YoungGuns.Data
 
                 // 2. traverse graph up from each changeset field
                 //    to create a list of fields to update
-                List<uint> depList = await GetDependentFields(changeset.ReturnId, changeset.BaseVersion, fieldId);
+                List<uint> depList = await GetDependentFields(fieldId);
 
                 // 3. merge this dictionary into the master dictionary for this changeset
                 foreach (uint id in depList)
@@ -85,7 +85,7 @@ namespace YoungGuns.Data
             FieldValues[fieldId] = (float)formula.Evaluate();
         }
 
-        private async Task<List<uint>> GetDependentFields(string returnId, int version, uint fieldId)
+        private async Task<List<uint>> GetDependentFields(uint fieldId)
         {
             CloudTable table = await GetCloudTableStorage();
             // Construct the query operation for the field list for the given field
