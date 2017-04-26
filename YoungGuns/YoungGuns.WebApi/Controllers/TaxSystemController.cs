@@ -49,7 +49,7 @@ namespace YoungGuns.WebApi.Controllers
             var taxSystem = _map.Map<TaxSystem>(request);
 
             var id = await _dbHelper.InsertTaxSystem(taxSystem);
-            //await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(request);
+            await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(request);
             
             return Ok(id);
         }
