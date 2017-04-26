@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService, FormSubmitService) {
+angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
 
     // preview form mode
     $scope.previewMode = false;
@@ -128,6 +128,6 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService, Form
     }
 
     $scope.submit = function(form) {
-        FormSubmitService.submit(form);
+        FormService.submit(form);
     }
 });

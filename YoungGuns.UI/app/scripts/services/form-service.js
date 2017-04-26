@@ -1,7 +1,7 @@
 'use strict';
 
 angularApp.service('FormService', function FormService($http) {
-
+    const baseurl = 'http://youngguns.azurewebsites.net';
     var formsJsonPath = './static-data/sample_forms.json';
 
     return {
@@ -48,19 +48,29 @@ angularApp.service('FormService', function FormService($http) {
             }
         ],
         form:function (id) {
-            // $http returns a promise, which has a then function, which also returns a promise
-            return $http.get(formsJsonPath).then(function (response) {
-                var requestedForm = {};
-                angular.forEach(response.data, function (form) {
-                    if (form.form_id == id) requestedForm = form;
-                });
-                return requestedForm;
+            return $http.get(baseurl + '/api/field').then(function (response) {
+                return response.data;
             });
         },
         forms: function() {
-            return $http.get(formsJsonPath).then(function (response) {
+            return $http.get(baseurl + '/api/field').then(function (response) {
                 return response.data;
             });
+        },
+        submit: function(form) {
+
+            
+            for(var i=0; i < form.form_fields.length; i++) {
+                var field = form.form_fields[i];       
+                field.field_type = field.field_calculation ? 'calc' : 'info';
+            }
+            console.log(form);
+            // $http.post(baseurl + '/api/field', form).then(function(response) {
+            //     console.log(response);
+            // })
+            // .catch(function(response) {
+            //     console.log('POST form request failed', response)
+            // })
         }
     };
 });
