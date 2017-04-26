@@ -19,7 +19,7 @@ namespace YoungGuns.WebApi.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Post([FromBody]FormDto form)
+        public IHttpActionResult Post([FromBody]TaxSystemDto form)
         {
             string response = "Received fields for form " + form.form_name + " " + form.form_id + ". Fields are ";
             foreach (FieldDto field in form.form_fields)
