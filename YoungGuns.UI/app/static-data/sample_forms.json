@@ -2,7 +2,7 @@
     "1" : {
         "taxsystem_id" : "1",
         "taxsystem_name" : "Test Form",
-        "form_fields" : {
+        "taxsystem_fields" : {
             "1" : {
                 "field_id" : 1,
                 "field_title" : "First Name",
