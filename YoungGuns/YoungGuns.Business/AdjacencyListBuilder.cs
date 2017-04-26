@@ -31,7 +31,7 @@ namespace YoungGuns.Business
                 foreach (uint depId in adjListsInverse[field.field_id].ToList())
                     BuildAdjListWorker(depId, adjListsInverse, adjListsInverse[field.field_id]);
 
-                await DAGUtilities.StoreLeafAdjacencyListAsync(field.field_id, adjListsInverse[field.field_id]);
+                await DAGUtilities.StoreLeafAdjacencyListAsync(field.field_id, dto.taxsystem_name, adjListsInverse[field.field_id]);
             }
         }
 

@@ -14,12 +14,14 @@ namespace YoungGuns.Data
     {
         public static void TopologicalSort() { }
 
-        public static async Task StoreLeafAdjacencyListAsync(uint leafFieldId, List<uint> dependencyList)
+        public static async Task StoreLeafAdjacencyListAsync(uint leafFieldId, string taxSystemName, List<uint> dependencyList)
         {
             CloudTable table = await GetAdjacencyListTable();
 
             AdjacencyListItem adjLI = new AdjacencyListItem()
             {
+                PartitionKey = taxSystemName,
+                RowKey = leafFieldId.ToString(),
                 DependentFields = new List<uint>(dependencyList)
             };
 
