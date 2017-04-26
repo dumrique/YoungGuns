@@ -25,6 +25,7 @@ namespace TaxSystemBuilderService
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
             return new ServiceInstanceListener[0];
+
         }
 
         /// <summary>
