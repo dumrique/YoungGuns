@@ -8,11 +8,12 @@ namespace YoungGuns.Shared
 {
     public class FieldDto
     {
-        string field_id;
-        string field_title;
-        string field_type;
-        string field_value;
-        string field_required;
-        string field_disabled;
+        public uint field_id;
+        public string field_title;
+        public string field_type;
+        public string field_value;
+        public bool field_required;
+        public bool field_disabled;
+        public string field_calculation;
     }
 }
