@@ -1,1 +1,21 @@
 # YoungGuns
+
+## YoungGuns.UI
+Two steps: first step is that the user creates their form, setting up all their fields. The form will be comprised of info fields and calc fields. When they are done creating the form, we will POST the form to the api with the following request body:
+
+```js
+[
+  {
+    "field_title": "Info Field",
+    "field_type": "textfield",
+    "field_value": "500",
+    "field_calculation": null
+  },
+  {
+    "field_title": "Calc Field",
+    "field_type": "calcfield",
+    "field_value": null,
+    "field_calculation": "[Info Field] * 2"
+  }
+]
+```
