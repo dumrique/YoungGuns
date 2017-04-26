@@ -25,21 +25,9 @@ namespace YoungGuns.WebApi.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var list = new List<TaxSystem>
-            {
-                new TaxSystem
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Tax form 1040"
-                },
-                new TaxSystem
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Tax form Corp"
-                }
-            };
+            //var taxSystems = 
 
-            return Ok(list);
+            return Ok();
         }
 
 
