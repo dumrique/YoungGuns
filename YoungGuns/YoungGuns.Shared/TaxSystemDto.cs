@@ -8,7 +8,7 @@ namespace YoungGuns.Shared
 {
     public class TaxSystemDto
     {
-        public uint form_id;
+        public string form_id;
         public string form_name;
         public List<FieldDto> form_fields;
         public bool submitted;
