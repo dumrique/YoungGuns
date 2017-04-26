@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YoungGuns.Shared
 {
-    class FieldDto
+    public class FieldDto
     {
         string field_id;
         string field_title;
