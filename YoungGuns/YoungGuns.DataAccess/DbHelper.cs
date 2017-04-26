@@ -29,7 +29,7 @@ namespace YoungGuns.DataAccess
 
         public List<TaxSystem> GetAllTaxSystems()
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
             var collection = _client.CreateDocumentQuery<TaxSystem>(uri);
             return collection.ToList();
         }

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
+using YoungGuns.Business;
+using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 using YoungGuns.WebApi.Map;
 
@@ -11,10 +14,12 @@ namespace YoungGuns.WebApi.Controllers
     public class TaxSystemController : ApiController
     {
         private readonly IMapper _map;
+        private readonly DbHelper _dbHelper;
 
         public TaxSystemController()
         {
             _map = AutomapperConfig.Create();
+            _dbHelper = new DbHelper();
         }
 
         [HttpGet]
@@ -39,14 +44,14 @@ namespace YoungGuns.WebApi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Post([FromBody]TaxSystemDto taxSystem)
+        public async Task<IHttpActionResult> Post([FromBody]PostTaxSystemRequest request)
         {
-            var tsId = Guid.NewGuid().ToString();
+            var taxSystem = _map.Map<TaxSystem>(request);
+
+            var id = await _dbHelper.InsertTaxSystem(taxSystem);
+            //await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(request);
             
-            // save tax system to DB
-            //CreateTaxSystem(tsId, taxSystem);
-            
-            return Ok(tsId);
+            return Ok(id);
         }
 
         [HttpPut]
