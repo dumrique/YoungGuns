@@ -19,14 +19,9 @@ namespace YoungGuns.WebApi.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Post([FromBody]FormDto form)
+        public IHttpActionResult Post([FromBody]FieldDto field)
         {
-            string response = "Received fields for form " + form.form_name + " " + form.form_id + ". Fields are ";
-            foreach (FieldDto field in form.form_fields)
-            {
-                response += field.field_title + " ";
-            }
-            return Ok(response);
+            return Ok("blah");
         }
 
         [HttpPut]
