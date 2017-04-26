@@ -11,6 +11,7 @@ namespace YoungGuns.Business
     {
         public async static Task ExtractAndStoreAdjacencyList(PostTaxSystemRequest dto)
         {
+            Dictionary<uint, List<uint>> adjLists = new Dictionary<uint, List<uint>>();
             Dictionary<uint, List<uint>> adjListsInverse = new Dictionary<uint, List<uint>>();
             var leafNodes = dto.taxsystem_fields.Where(f => f.field_type == "calcfield").ToList();
 
@@ -18,9 +19,22 @@ namespace YoungGuns.Business
             {
                 foreach (uint id in ExtractFieldsFromFormula(field.field_calculation))
                 {
-                    if (adjListsInverse[id].Contains(field.field_id))
-                        adjListsInverse[id].Add(field.field_id);
+                    switch (field.field_type)
+                    {
+                        case "calcformula":
+                            // build adjacency list for field formula parameters
+                            if (!adjLists[field.field_id].Contains(field.field_id))
+                                adjLists[field.field_id].Add(id);
+                            break;
+                        case "calcfield":
+                            // build adjacency list for leaf nodes
+                            if (!adjListsInverse[id].Contains(field.field_id))
+                                adjListsInverse[id].Add(field.field_id);
+                            break;
+                    }
                 }
+                // save the adjLists to table storage
+                await DAGUtilities.StoreCalcAdjacencyListAsync(field.field_id, dto.taxsystem_name, adjLists[field.field_id]);
             }
 
             // we need the inverse of the list above for storage
