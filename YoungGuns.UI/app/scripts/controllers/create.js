@@ -1,15 +1,15 @@
 'use strict';
 
-angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService, FormSubmitService) {
+angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
 
     // preview form mode
     $scope.previewMode = false;
 
     // new form
     $scope.form = {};
-    $scope.form.form_id = 1;
-    $scope.form.form_name = 'My Form';
-    $scope.form.form_fields = [];
+    $scope.form.taxsystem_id = 1;
+    $scope.form.taxsystem_name = 'My Form';
+    $scope.form.taxsystem_fields = [];
     // previewForm - for preview purposes, form will be copied into this
     // otherwise, actual form might get manipulated in preview mode
     $scope.previewForm = {};
@@ -40,14 +40,14 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService, Form
         };
 
         // put newField into fields array
-        $scope.form.form_fields.push(newField);
+        $scope.form.taxsystem_fields.push(newField);
     }
 
     // deletes particular field on button click
     $scope.deleteField = function (field_id){
-        for(var i = 0; i < $scope.form.form_fields.length; i++){
-            if($scope.form.form_fields[i].field_id == field_id){
-                $scope.form.form_fields.splice(i, 1);
+        for(var i = 0; i < $scope.form.taxsystem_fields.length; i++){
+            if($scope.form.taxsystem_fields[i].field_id == field_id){
+                $scope.form.taxsystem_fields.splice(i, 1);
                 break;
             }
         }
@@ -93,7 +93,7 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService, Form
 
     // preview form
     $scope.previewOn = function(){
-        if($scope.form.form_fields == null || $scope.form.form_fields.length == 0) {
+        if($scope.form.taxsystem_fields == null || $scope.form.taxsystem_fields.length == 0) {
             var title = 'Error';
             var msg = 'No fields added yet, please add fields to the form before preview.';
             var btns = [{result:'ok', label: 'OK', cssClass: 'btn-primary'}];
@@ -123,11 +123,11 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService, Form
 
     // deletes all the fields
     $scope.reset = function (){
-        $scope.form.form_fields.splice(0, $scope.form.form_fields.length);
+        $scope.form.taxsystem_fields.splice(0, $scope.form.taxsystem_fields.length);
         $scope.addField.lastAddedID = 0;
     }
 
     $scope.submit = function(form) {
-        FormSubmitService.submit(form);
+        var id = FormService.submit(form);
     }
 });

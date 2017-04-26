@@ -12,11 +12,26 @@ namespace YoungGuns.WebApi.Controllers
     [Route("api/taxsystem")]
     public class TaxSystemController : ApiController
     {
+
         [HttpGet]
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get()
         {
-            return Ok(new TaxSystemDto());
+            var list = new List<TaxSystem>();
+            var taxSystem = new TaxSystem
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Tax form 1040"
+            };
+            list.Add(taxSystem);
+            taxSystem = new TaxSystem
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Tax form Corp"
+            };
+            list.Add(taxSystem);
+            return Ok(list);
         }
+
 
         [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody]TaxSystemDto taxSystem)

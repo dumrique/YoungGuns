@@ -1,8 +1,8 @@
 {
     "1" : {
-        "form_id" : "1",
-        "form_name" : "My Test Form",
-        "form_fields" : {
+        "taxsystem_id" : "1",
+        "taxsystem_name" : "Test Form",
+        "taxsystem_fields" : {
             "1" : {
                 "field_id" : 1,
                 "field_title" : "First Name",
