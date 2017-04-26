@@ -15,13 +15,21 @@ namespace WebApi.Controllers
         [HttpGet]
         public string Get()
         {
-            return "value";
+            return "Hello World";
         }
         
         [HttpPost]
-        public void Post([FromBody]string form_id, [FromBody]string form_name, [FromBody]List<FieldDto> fields)
+        public string Post([FromBody]string form_id, [FromBody]string form_name, [FromBody]List<FieldDto> form_fields)
         {
+            string response = "Received fields for form " + form_name + " " + form_id + ". Fields are ";
+            foreach (FieldDto field in form_fields)
+            {
+                response += field.field_title + " ";
+            }
 
+
+
+            return response;
         }
         
         [HttpPut("{id}")]

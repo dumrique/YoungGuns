@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "exports": {
+    "YoungGuns.Shared/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.5.2",
+      "compile": {
+        "bin/Release/YoungGuns.Shared.dll": {}
+      },
+      "runtime": {
+        "bin/Release/YoungGuns.Shared.dll": {}
+      },
+      "contentFiles": {
+        "bin/Release/YoungGuns.Shared.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}
