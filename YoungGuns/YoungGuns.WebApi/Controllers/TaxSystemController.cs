@@ -42,7 +42,7 @@ namespace YoungGuns.WebApi.Controllers
             //CreateTaxSystem(tsId, taxSystem);
 
             // save adjacency lists to storage
-            await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(taxSystem);
+            await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(taxSystem);
 
             return Ok(tsId);
         }

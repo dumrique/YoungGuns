@@ -12,17 +12,33 @@ namespace YoungGuns.Data
 {
     public class DAGUtilities
     {
-        public static void TopologicalSort() { }
-
         public static async Task StoreLeafAdjacencyListAsync(uint leafFieldId, string taxSystemName, List<uint> dependencyList)
         {
             CloudTable table = await GetAdjacencyListTable();
 
             AdjacencyListItem adjLI = new AdjacencyListItem()
             {
-                PartitionKey = taxSystemName,
+                PartitionKey = taxSystemName + "_leaf",
                 RowKey = leafFieldId.ToString(),
                 DependentFields = new List<uint>(dependencyList)
+            };
+
+            // Create the TableOperation object that inserts the adjacency list item.
+            TableOperation insertOperation = TableOperation.Insert(adjLI);
+
+            // Execute the insert operation.
+            await table.ExecuteAsync(insertOperation);
+        }
+
+        public static async Task StoreCalcAdjacencyListAsync(uint field_id, string taxSystemName, List<uint> depList)
+        {
+            CloudTable table = await GetAdjacencyListTable();
+
+            AdjacencyListItem adjLI = new AdjacencyListItem()
+            {
+                PartitionKey = taxSystemName + "_calc",
+                RowKey = field_id.ToString(),
+                DependentFields = new List<uint>(depList)
             };
 
             // Create the TableOperation object that inserts the adjacency list item.
@@ -41,12 +57,13 @@ namespace YoungGuns.Data
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
             // Retrieve a reference to the table.
-            CloudTable table = tableClient.GetTableReference("TaxSystemAdjacencyLists");
+            CloudTable table = tableClient.GetTableReference($"TaxSystemAdjacencyLists");
 
             // Create the table if it doesn't exist.
             await table.CreateIfNotExistsAsync();
 
             return table;
         }
+
     }
 }
