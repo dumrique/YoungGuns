@@ -45,6 +45,10 @@
     <Compile Include="TopoListBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\YoungGuns.Data\YoungGuns.Data.csproj">
+      <Project>{189B5903-DB09-4F18-A25B-7ACC4802CD28}</Project>
+      <Name>YoungGuns.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">
       <Project>{a48455e6-7071-4f78-93ed-e1eba6738da0}</Project>
       <Name>YoungGuns.Shared</Name>

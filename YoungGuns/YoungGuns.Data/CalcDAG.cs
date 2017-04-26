@@ -21,7 +21,7 @@ namespace YoungGuns.Data
         /// <summary>
         /// Adjacency list defining field dependencies
         /// </summary> 
-        public Dictionary<uint,List<uint>> AdjacencyList { get; set; }
+        public Dictionary<uint, List<uint>> AdjacencyList { get; set; }
 
         /// <summary>
         /// Dictionary of calc field values, 
@@ -52,7 +52,7 @@ namespace YoungGuns.Data
 
         public async void ProcessChangeset(CalcChangeset changeset)
         {
-            SortedList<int, uint> fieldsToUpdate = new SortedList<int,uint>();  // key: topo index, value: fieldId
+            SortedList<int, uint> fieldsToUpdate = new SortedList<int, uint>();  // key: topo index, value: fieldId
 
             Parallel.ForEach(changeset.NewValues.Keys, async (fieldId) =>
             {
@@ -65,7 +65,7 @@ namespace YoungGuns.Data
 
                 // 3. merge this dictionary into the master dictionary for this changeset
                 foreach (uint id in depList)
-                    fieldsToUpdate.Add(TopoList.FindIndex((k) => k==id), id);
+                    fieldsToUpdate.Add(TopoList.FindIndex((k) => k == id), id);
             });
 
             // 4. Calc the necessary fields in order
@@ -78,7 +78,7 @@ namespace YoungGuns.Data
             Expression formula = new Expression(FieldFormulas[fieldId]);
 
             // set params from dependent fields
-            foreach(uint paramId in AdjacencyList[fieldId])
+            foreach (uint paramId in AdjacencyList[fieldId])
                 formula.Parameters.Add(paramId.ToString(), FieldValues[paramId]);
 
             // update calced value in the dictionary
@@ -87,7 +87,7 @@ namespace YoungGuns.Data
 
         private async Task<List<uint>> GetDependentFields(uint fieldId)
         {
-            CloudTable table = await GetCloudTableStorage();
+            CloudTable table = await DAGUtilities.GetAdjacencyListTable();
             // Construct the query operation for the field list for the given field
             TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>(TaxSystem.Name, fieldId.ToString());
 
@@ -95,22 +95,5 @@ namespace YoungGuns.Data
             TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
             return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
         }
-
-        private async Task<CloudTable> GetCloudTableStorage()
-        { 
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                "DefaultEndpointsProtocol=https;AccountName=youngguns;AccountKey=NGct+PJexXQ0Eby6DhuOQ555dev7V6Z+lciJyunYM6aXVoEvzQD8Ig2FVv5YGiklTlPLaUENU4Cgg4N2pFzY2A==;EndpointSuffix=core.windows.net");
-
-            // Create the table client.
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-
-            // Retrieve a reference to the table.
-            CloudTable table = tableClient.GetTableReference("TaxSystemAdjacencyLists");
-
-            // Create the table if it doesn't exist.
-            await table.CreateIfNotExistsAsync();
-
-            return table;
-        }
-    }
+    }       
 }

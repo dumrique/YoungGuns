@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="CalcDAG.cs" />
     <Compile Include="Contracts\AdjacencyListItem.cs" />
+    <Compile Include="DAGUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReturnChangeset.cs" />
   </ItemGroup>
