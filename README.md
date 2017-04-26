@@ -13,14 +13,14 @@ Two steps: first step is that the user creates their form, setting up all their 
           "field_type": "textfield",
           "field_value": "500",
           "field_calculation": null,
-          "field_type": "info"
+          "type": "info"
         },
         {
           "field_title": "Calc Field",
           "field_type": "calcfield",
           "field_value": null,
           "field_calculation": "[Info Field] * 2",
-          "field_type": "calc"
+          "type": "calc"
         }
     ]
 }
