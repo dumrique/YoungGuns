@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "YoungGuns", "YoungGuns\YoungGuns.sfproj", "{030523F1-AAA8-487C-8F86-B97573FBAF3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxSystemBuilderService", "TaxSystemBuilderService\TaxSystemBuilderService.csproj", "{1B6A2B5C-A691-4320-8B3A-BF55FA13CA82}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoungGuns.Shared", "YoungGuns.Shared\YoungGuns.Shared.csproj", "{A48455E6-7071-4F78-93ED-E1EBA6738DA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoungGuns.Data", "YoungGuns.Data\YoungGuns.Data.csproj", "{189B5903-DB09-4F18-A25B-7ACC4802CD28}"
@@ -31,12 +29,6 @@ Global
 		{030523F1-AAA8-487C-8F86-B97573FBAF3E}.Release|x64.ActiveCfg = Release|x64
 		{030523F1-AAA8-487C-8F86-B97573FBAF3E}.Release|x64.Build.0 = Release|x64
 		{030523F1-AAA8-487C-8F86-B97573FBAF3E}.Release|x64.Deploy.0 = Release|x64
-		{1B6A2B5C-A691-4320-8B3A-BF55FA13CA82}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{1B6A2B5C-A691-4320-8B3A-BF55FA13CA82}.Debug|x64.ActiveCfg = Debug|x64
-		{1B6A2B5C-A691-4320-8B3A-BF55FA13CA82}.Debug|x64.Build.0 = Debug|x64
-		{1B6A2B5C-A691-4320-8B3A-BF55FA13CA82}.Release|Any CPU.ActiveCfg = Release|x64
-		{1B6A2B5C-A691-4320-8B3A-BF55FA13CA82}.Release|x64.ActiveCfg = Release|x64
-		{1B6A2B5C-A691-4320-8B3A-BF55FA13CA82}.Release|x64.Build.0 = Release|x64
 		{A48455E6-7071-4F78-93ED-E1EBA6738DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A48455E6-7071-4F78-93ED-E1EBA6738DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A48455E6-7071-4F78-93ED-E1EBA6738DA0}.Debug|x64.ActiveCfg = Debug|Any CPU
