@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using YoungGuns.Business;
 using YoungGuns.Shared;
 
 namespace YoungGuns.WebApi.Controllers
@@ -30,13 +34,16 @@ namespace YoungGuns.WebApi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult Post([FromBody]TaxSystemDto taxSystem)
+        public async Task<IHttpActionResult> Post([FromBody]TaxSystemDto taxSystem)
         {
             var tsId = Guid.NewGuid().ToString();
-            
-            // save tax system to DB
+
+            // save tax system to storage
             //CreateTaxSystem(tsId, taxSystem);
-            
+
+            // save adjacency lists to storage
+            await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(taxSystem);
+
             return Ok(tsId);
         }
 
