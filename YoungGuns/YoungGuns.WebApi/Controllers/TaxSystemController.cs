@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using YoungGuns.Business;
@@ -25,11 +23,10 @@ namespace YoungGuns.WebApi.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            //var taxSystems = 
+            var taxSystems = _dbHelper.GetAllTaxSystems();
 
-            return Ok();
+            return Ok(taxSystems);
         }
-
 
         [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody]PostTaxSystemRequest request)
