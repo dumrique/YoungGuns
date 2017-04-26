@@ -6,7 +6,7 @@ Two steps: first step is that the user creates their form, setting up all their 
 ```js
 {
     "form_id": 1,
-    "form_name": "My Form",
+    "tax_system": "My Form",
     "form_fields": [
         {
           "field_title": "Info Field",
