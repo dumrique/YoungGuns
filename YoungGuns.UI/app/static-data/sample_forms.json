@@ -1,7 +1,7 @@
 {
     "1" : {
-        "form_id" : "1",
-        "form_name" : "My Test Form",
+        "taxsystem_id" : "1",
+        "taxsystem_name" : "Test Form",
         "form_fields" : {
             "1" : {
                 "field_id" : 1,

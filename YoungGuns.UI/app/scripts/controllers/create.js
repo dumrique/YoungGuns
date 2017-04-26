@@ -7,8 +7,8 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
 
     // new form
     $scope.form = {};
-    $scope.form.form_id = 1;
-    $scope.form.form_name = 'My Form';
+    $scope.form.taxsystem_id = 1;
+    $scope.form.taxsystem_name = 'My Form';
     $scope.form.form_fields = [];
     // previewForm - for preview purposes, form will be copied into this
     // otherwise, actual form might get manipulated in preview mode
@@ -128,6 +128,11 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
     }
 
     $scope.submit = function(form) {
-        FormService.submit(form);
+        FormService.submit(form).then(function(repsonse) {
+            console.log('success', response.data);
+        })
+        .catch(function(response) {
+            console.log('POST form request failed', response)
+        })
     }
 });

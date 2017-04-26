@@ -53,24 +53,15 @@ angularApp.service('FormService', function FormService($http) {
             });
         },
         forms: function() {
-            return $http.get(baseurl + '/api/field').then(function (response) {
-                return response.data;
-            });
+            return $http.get(baseurl + '/api/allforms');
         },
-        submit: function(form) {
-
-            
+        submit: function(form) {         
             for(var i=0; i < form.form_fields.length; i++) {
                 var field = form.form_fields[i];       
-                field.field_type = field.field_calculation ? 'calc' : 'info';
+                field.type = field.field_calculation ? 'calc' : 'info';
             }
-            console.log(form);
-            // $http.post(baseurl + '/api/field', form).then(function(response) {
-            //     console.log(response);
-            // })
-            // .catch(function(response) {
-            //     console.log('POST form request failed', response)
-            // })
+
+            return $http.post(baseurl + '/api/taxsystem', form);
         }
     };
 });
