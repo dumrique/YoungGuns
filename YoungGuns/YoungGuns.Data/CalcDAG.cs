@@ -1,5 +1,4 @@
 ﻿using NCalc;
-using YoungGuns.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +26,13 @@ namespace YoungGuns.Data
         /// Dictionary of calc field values, 
         ///     sorted in topological sort order by calc dependency
         /// </summary>
-        public SortedDictionary<uint, float> FieldValues { get; set; }
+        public Dictionary<uint, float> FieldValues { get; set; }
 
         /// <summary>
         /// Dictionary of calc field formulas, 
         ///     sorted in topological sort order to match FieldValues
         /// </summary>
-        public SortedDictionary<uint, string> FieldFormulas { get; set; }
+        public Dictionary<uint, string> FieldFormulas { get; set; }
 
         /// <summary>
         /// Ordered list of field IDs in a topologically sorted order,
@@ -46,8 +45,8 @@ namespace YoungGuns.Data
         {
             TaxSystem = taxSystem;
             AdjacencyList = new Dictionary<uint, List<uint>>();
-            FieldValues = new SortedDictionary<uint, float>();
-            FieldFormulas = new SortedDictionary<uint, string>();
+            FieldValues = new Dictionary<uint, float>();
+            FieldFormulas = new Dictionary<uint, string>();
         }
 
         public async void ProcessChangeset(CalcChangeset changeset)
@@ -65,7 +64,7 @@ namespace YoungGuns.Data
 
                 // 3. merge this dictionary into the master dictionary for this changeset
                 foreach (uint id in depList)
-                    fieldsToUpdate.Add(FieldValues.ToList().FindIndex((kvp) => kvp.Key==id), id);      //TODO: find better way than FieldValues.ToList()
+                    fieldsToUpdate.Add(TopoList.FindIndex((k) => k==id), id);
             });
 
             // 4. Calc the necessary fields in order
