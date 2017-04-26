@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Web.Http;
-using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 using YoungGuns.WebApi.Map;
 
@@ -41,14 +39,14 @@ namespace YoungGuns.WebApi.Controllers
 
 
         [HttpPost]
-        public async Task<IHttpActionResult> Post([FromBody]PostTaxSystemRequest request)
+        public IHttpActionResult Post([FromBody]TaxSystemDto taxSystem)
         {
-            var taxSystem = _map.Map<TaxSystem>(request);
-
-            var dbHelper = new DbHelper();
-            var id = await dbHelper.InsertTaxSystem(taxSystem);
+            var tsId = Guid.NewGuid().ToString();
             
-            return Ok(id);
+            // save tax system to DB
+            //CreateTaxSystem(tsId, taxSystem);
+            
+            return Ok(tsId);
         }
 
         [HttpPut]

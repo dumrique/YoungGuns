@@ -241,6 +241,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\YoungGuns.Business\YoungGuns.Business.csproj">
+      <Project>{8621AB28-645E-4616-9804-53CB372901EE}</Project>
+      <Name>YoungGuns.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YoungGuns.DataAccess\YoungGuns.DataAccess.csproj">
       <Project>{ad1890c7-2ca5-406a-b71e-47ce3c98a033}</Project>
       <Name>YoungGuns.DataAccess</Name>
