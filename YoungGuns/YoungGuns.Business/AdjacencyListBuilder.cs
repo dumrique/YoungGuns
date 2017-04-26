@@ -14,6 +14,8 @@ namespace YoungGuns.Business
             foreach (FieldDto field in dto.form_fields)
                 adjListsInverse[field.field_id] = ExtractFieldsFromFormula(field.field_calculation);
            
+            // we need the inverse of the list above for storage
+            //      i.e., we need the list of dependent fields for each field
 
         }
 
