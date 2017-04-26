@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using YoungGuns.Data;
 using YoungGuns.Shared;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.Azure.Documents.Client;
 
 namespace YoungGuns.DataAccess
@@ -31,11 +27,11 @@ namespace YoungGuns.DataAccess
             return null;
         }
 
-        public async Task InsertTaxSystem(TaxSystem system)
+        public async Task<string> InsertTaxSystem(TaxSystem system)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
             var result = await _client.UpsertDocumentAsync(uri, system);
-
+            return result.Resource.Id;
         }
 
         public CalcDAG GetCalcDag(string taxSystemId)

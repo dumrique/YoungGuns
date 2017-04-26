@@ -1,47 +1,58 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
+using YoungGuns.DataAccess;
 using YoungGuns.Shared;
+using YoungGuns.WebApi.Map;
 
 namespace YoungGuns.WebApi.Controllers
 {
     [Route("api/taxsystem")]
     public class TaxSystemController : ApiController
     {
+        private readonly IMapper _map;
+
+        public TaxSystemController()
+        {
+            _map = AutomapperConfig.Create();
+        }
 
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var list = new List<TaxSystem>();
-            var taxSystem = new TaxSystem
+            var list = new List<TaxSystem>
             {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Tax form 1040"
+                new TaxSystem
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Tax form 1040"
+                },
+                new TaxSystem
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Tax form Corp"
+                }
             };
-            list.Add(taxSystem);
-            taxSystem = new TaxSystem
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Tax form Corp"
-            };
-            list.Add(taxSystem);
+
             return Ok(list);
         }
 
 
         [HttpPost]
-        public IHttpActionResult Post([FromBody]TaxSystemDto taxSystem)
+        public async Task<IHttpActionResult> Post([FromBody]PostTaxSystemRequest request)
         {
-            var tsId = Guid.NewGuid().ToString();
+            var taxSystem = _map.Map<TaxSystem>(request);
+
+            var dbHelper = new DbHelper();
+            var id = await dbHelper.InsertTaxSystem(taxSystem);
             
-            // save tax system to DB
-            //CreateTaxSystem(tsId, taxSystem);
-            
-            return Ok(tsId);
+            return Ok(id);
         }
 
         [HttpPut]
-        public void Put(string id, [FromBody]TaxSystemDto taxSystem)
+        public void Put(string id, [FromBody]PostTaxSystemRequest taxSystem)
         {
             // save tax system to DB
             //SaveTaxSystem(id, taxSystem);

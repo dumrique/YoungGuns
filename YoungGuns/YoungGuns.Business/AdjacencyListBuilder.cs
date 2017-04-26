@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using YoungGuns.Shared;
 
@@ -8,10 +7,10 @@ namespace YoungGuns.Business
     public class AdjacencyListBuilder
     {
 
-        public static void ExtractAndStoreAdjacencyList(TaxSystemDto dto)
+        public static void ExtractAndStoreAdjacencyList(PostTaxSystemRequest dto)
         {
             Dictionary<uint, List<uint>> adjListsInverse = new Dictionary<uint, List<uint>>();
-            foreach (FieldDto field in dto.taxsystem_fields)
+            foreach (var field in dto.taxsystem_fields)
                 adjListsInverse[field.field_id] = ExtractFieldsFromFormula(field.field_calculation);
            
             // we need the inverse of the list above for storage
