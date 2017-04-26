@@ -7,7 +7,7 @@ using YoungGuns.Shared;
 
 namespace YoungGuns.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/taxsystem")]
     public class TaxSystemController : ApiController
     {
         [HttpGet]
@@ -24,8 +24,8 @@ namespace YoungGuns.WebApi.Controllers
             // save tax system to DB
             //CreateTaxSystem(tsId, taxSystem);
 
-            string response = "Received fields for form " + taxSystem.form_name + " " + taxSystem.form_id + ". Fields are ";
-            foreach (FieldDto field in taxSystem.form_fields)
+            string response = "Received fields for form " + taxSystem.taxsystem_name + " " + taxSystem.taxsystem_id + ". Fields are ";
+            foreach (FieldDto field in taxSystem.taxsystem_fields)
             {
                 response += field.field_title + " ";
             }

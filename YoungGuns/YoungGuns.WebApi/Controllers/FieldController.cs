@@ -9,7 +9,7 @@ using YoungGuns.Shared;
 
 namespace YoungGuns.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/field")]
     public class FieldController : ApiController
     {
         [HttpGet]
@@ -19,9 +19,14 @@ namespace YoungGuns.WebApi.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Post([FromBody]FieldDto field)
+        public IHttpActionResult Post([FromBody]TaxSystemDto form)
         {
-            return Ok("blah");
+            string response = "Received fields for form " + form.taxsystem_name + " " + form.taxsystem_id + ". Fields are ";
+            foreach (FieldDto field in form.taxsystem_fields)
+            {
+                response += field.field_title + " ";
+            }
+            return Ok(response);
         }
 
         [HttpPut]

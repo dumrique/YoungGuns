@@ -11,7 +11,7 @@ namespace YoungGuns.Business
         public static void ExtractAndStoreAdjacencyList(TaxSystemDto dto)
         {
             Dictionary<uint, List<uint>> adjListsInverse = new Dictionary<uint, List<uint>>();
-            foreach (FieldDto field in dto.form_fields)
+            foreach (FieldDto field in dto.taxsystem_fields)
                 adjListsInverse[field.field_id] = ExtractFieldsFromFormula(field.field_calculation);
            
             // we need the inverse of the list above for storage
