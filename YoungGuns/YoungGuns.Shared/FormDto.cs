@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YoungGuns.Shared
 {
-    public class FormDto
+    public class TaxSystemDto
     {
         public uint form_id;
         public string form_name;
