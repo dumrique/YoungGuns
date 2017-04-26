@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YoungGuns.Data;
 using YoungGuns.Shared;
 using Microsoft.Azure.Documents.Client;
+using System.Linq;
 
 namespace YoungGuns.DataAccess
 {
@@ -20,7 +21,7 @@ namespace YoungGuns.DataAccess
         public TaxSystem GetTaxSystem(string id)
         {
             Uri uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
-            IOrderedQueryable<TaxSystem> collection = _client.CreateDocumentQuery<TaxSystem>(uri);
+            var collection = _client.CreateDocumentQuery<TaxSystem>(uri);
             List<TaxSystem> result = collection.Where(item => item.Id.Equals(id)).ToList();
             TaxSystem ts = result.First();
             return ts;
