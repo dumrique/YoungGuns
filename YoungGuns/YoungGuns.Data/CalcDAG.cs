@@ -56,7 +56,7 @@ namespace YoungGuns.Data
 
                 // 3. merge this dictionary into the master dictionary for this changeset
                 foreach (uint id in depList)
-                    fieldsToUpdate.Add(FieldValues.ToList().FindIndex((kvp) => kvp.Key==id), id);      //TODO: find better way than FieldValues.ToList()
+                    fieldsToUpdate.Add(TopoList.FindIndex((k) => k==id), id);
             });
 
             // 4. Calc the necessary fields in order
