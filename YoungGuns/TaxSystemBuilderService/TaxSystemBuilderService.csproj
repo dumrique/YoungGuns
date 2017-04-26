@@ -80,6 +80,7 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ITaxSystemService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxSystemBuilderService.cs" />
     <Compile Include="Program.cs" />
