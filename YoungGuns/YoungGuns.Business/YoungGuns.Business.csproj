@@ -44,6 +44,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TopoListBuilder.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">
+      <Project>{a48455e6-7071-4f78-93ed-e1eba6738da0}</Project>
+      <Name>YoungGuns.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
