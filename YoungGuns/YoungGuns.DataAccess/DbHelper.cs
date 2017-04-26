@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using YoungGuns.Data;
 using YoungGuns.Shared;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace YoungGuns.DataAccess
 {
@@ -35,6 +37,9 @@ namespace YoungGuns.DataAccess
             
         }
 
-        public string GetEndpoint
+        public string GetConnectionString()
+        {
+            return "DefaultEndpointsProtocol=https;AccountName=youngguns;AccountKey=NGct+PJexXQ0Eby6DhuOQ555dev7V6Z+lciJyunYM6aXVoEvzQD8Ig2FVv5YGiklTlPLaUENU4Cgg4N2pFzY2A==;EndpointSuffix=core.windows.net";
+        }
     }
 }
