@@ -44,7 +44,11 @@ angularApp.service('FormService', function FormService($http) {
             },
             {
                 name : 'calcfield',
-                value : 'Calculation'
+                value : 'No Calculation'
+            },
+            {
+                name : 'calcformula',
+                value : 'Calculate Formula'
             }
         ],
         form:function (id) {
@@ -60,7 +64,7 @@ angularApp.service('FormService', function FormService($http) {
                 var field = form.taxsystem_fields[i];       
                 field.type = field.field_calculation ? 'calc' : 'info';
             }
-           //console.log('submitting form', form);
+           console.log('submitting form', form);
             return $http.post(baseurl + '/api/taxsystem', form).then(function(response) {
                 console.log(response.data);
                 return response.data;

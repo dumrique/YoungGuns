@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 using YoungGuns.Shared;
 
@@ -10,12 +7,6 @@ namespace YoungGuns.WebApi.Controllers
     [Route("api/taxsystem")]
     public class TaxSystemController : ApiController
     {
-        [HttpGet]
-        public IHttpActionResult Get(int id)
-        {
-            return Ok(new TaxSystemDto());
-        }
-
         [HttpPost]
         public IHttpActionResult Post([FromBody]TaxSystemDto taxSystem)
         {

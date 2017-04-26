@@ -12,12 +12,6 @@ namespace YoungGuns.WebApi.Controllers
     [Route("api/field")]
     public class FieldController : ApiController
     {
-        [HttpGet]
-        public IHttpActionResult Get()
-        {
-            return Ok("Hello World");
-        }
-
         [HttpPost]
         public IHttpActionResult Post([FromBody]TaxSystemDto form)
         {
@@ -30,16 +24,6 @@ namespace YoungGuns.WebApi.Controllers
 
 
             return Ok(response);
-        }
-
-        [HttpPut]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        [HttpDelete]
-        public void Delete(int id)
-        {
         }
     }
 }
