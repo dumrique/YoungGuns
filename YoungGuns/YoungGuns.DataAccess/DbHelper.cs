@@ -7,11 +7,20 @@ using YoungGuns.Data;
 using YoungGuns.Shared;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Documents.Client;
 
 namespace YoungGuns.DataAccess
 {
     public class DbHelper
     {
+        private const string DatabaseName = "YoungGuns";
+        private readonly DocumentClient _client;
+
+        public DbHelper()
+        {
+            _client = new DocumentClient(GetEndpointUrl(), GetPrimaryKey());
+        }
+
         public TaxSystem GetTaxSystem(string id)
         {
             return null;
@@ -22,9 +31,11 @@ namespace YoungGuns.DataAccess
             return null;
         }
 
-        public void InsertTaxSystem(TaxSystem system)
+        public async Task InsertTaxSystem(TaxSystem system)
         {
-            
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var result = await _client.UpsertDocumentAsync(uri, system);
+
         }
 
         public CalcDAG GetCalcDag(string taxSystemId)
@@ -42,14 +53,16 @@ namespace YoungGuns.DataAccess
             return "AccountEndpoint=https://youngguns.documents.azure.com:443/;AccountKey=F7a8aOEM1XHZLkkxJBjY9gyAMM5kjWxj1mNgIYxN2DU409oV3NoNEVpEzpwqTc6PPK6ZXWhGHZI6hqgCSjsgtA==;";
         }
 
-        public string GetEndpointUrl()
+        #region Private
+        private Uri GetEndpointUrl()
         {
-            return "https://youngguns.documents.azure.com:443/";
+            return new Uri("https://youngguns.documents.azure.com:443/");
         }
 
-        public string GetPrimaryKey()
+        private string GetPrimaryKey()
         {
             return "F7a8aOEM1XHZLkkxJBjY9gyAMM5kjWxj1mNgIYxN2DU409oV3NoNEVpEzpwqTc6PPK6ZXWhGHZI6hqgCSjsgtA==";
         }
+        #endregion
     }
 }
