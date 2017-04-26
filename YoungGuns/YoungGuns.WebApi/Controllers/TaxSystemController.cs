@@ -7,7 +7,7 @@ using YoungGuns.Shared;
 
 namespace YoungGuns.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/taxsystem")]
     public class TaxSystemController : ApiController
     {
         [HttpGet]

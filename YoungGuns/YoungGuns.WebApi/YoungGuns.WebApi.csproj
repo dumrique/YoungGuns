@@ -278,10 +278,8 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Properties\PublishProfiles\YoungGuns - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\YoungGuns - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\YoungGuns - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\YoungGunsApi - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

@@ -9,7 +9,7 @@ using YoungGuns.Shared;
 
 namespace YoungGuns.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/field")]
     public class FieldController : ApiController
     {
         [HttpGet]
