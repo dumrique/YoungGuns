@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response\GetTaxSystemResponse.cs" />
     <Compile Include="TaxSystem.cs" />
+    <Compile Include="TaxSystemTopoFieldList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
