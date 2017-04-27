@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace YoungGuns.Shared
 {
@@ -8,5 +9,7 @@ namespace YoungGuns.Shared
         public string Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
+        [JsonProperty("fields")]
+        public IEnumerable<FieldDto> Fields { get; set; }
     }
 }
