@@ -1,13 +1,14 @@
 'use strict';
 
 var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) {
-	//$scope.forms = FormService.forms();
 	$scope.previewMode = false;
+	// FormService.getSession().then(function(response) {
+	// 	// ??
+	// })
 
 	FormService.forms().then(function (response) {
                 $scope.forms = response.data;
             });
-
 
 	$scope.selectForm = function(form) {
 		$scope.form = form;
@@ -17,10 +18,13 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) 
 
 	$scope.get = function() {
 		var formData = FormService.form($scope.form.id).then(function (response) {
-				$scope.previewMode = !$scope.previewMode;
-                
-				$scope.previewFormx = angular.copy(response.data);
-            });
-		
+			$scope.previewMode = !$scope.previewMode;
+			
+			$scope.previewFormx = angular.copy(response.data);
+		});
+	}
+
+	$scope.calculate = function() {
+
 	}
 });
