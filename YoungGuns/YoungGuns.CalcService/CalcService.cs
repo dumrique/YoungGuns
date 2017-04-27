@@ -15,15 +15,19 @@ namespace YoungGuns.CalcService
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class CalcService : StatefulService
+    internal sealed class CalcService : StatefulService, ICalcService
     {
         private CalcDAG _dag;
-
-        public TaxSystem _taxSystem { get; set; }
+        private TaxSystem _taxSystem;
 
         public CalcService(StatefulServiceContext context)
             : base(context)
         { }
+
+        public TaxSystem GetLoadedTaxSystem()
+        {
+            return _taxSystem;
+        }
 
         public void Calculate(CalcChangeset changeset)
         {
