@@ -7,8 +7,8 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService, 
 	// })
 
 	MockFormService.forms().then(function (response) {
-                $scope.forms = response.data;
-            });
+		$scope.forms = response.data;
+	});
 
 	$scope.selectForm = function(form) {
 		$scope.form = form;
@@ -18,6 +18,7 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService, 
 
 	$scope.get = function() {
 		MockFormService.forms().then(function(response) {
+			$scope.originalData = response.data[0];
 			$scope.previewMode = !$scope.previewMode;
 			$scope.previewFormx = angular.copy(response.data[0]);
 		})
@@ -29,7 +30,7 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService, 
 	}
 
 	$scope.calculate = function() {
-		var response = FormService.calculate($scope.previewFormx);
+		var response = FormService.calculate($scope.previewFormx, $scope.originalData);
 		$scope.previewFormx.taxsystem_fields = angular.copy(response);
 	}
 });

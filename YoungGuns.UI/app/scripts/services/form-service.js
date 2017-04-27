@@ -72,13 +72,17 @@ angularApp.service('FormService', function FormService($http) {
                 return response.data;
             })
         },
-        calculate: function(form) {
+        calculate: function(form, originalForm) {
             var requestBody = {};
             for(var i = 0; i < form.taxsystem_fields.length; i++) {
                 var field = form.taxsystem_fields[i];
-                requestBody[field.field_id] = field.field_value;
+                var originalField = originalForm.taxsystem_fields.filter((f) => f.field_id === field.field_id)[0];
+   
+                if(field.field_value !== originalField.field_value) {             
+                    requestBody[field.field_id] = field.field_value;
+                }
             }
-
+            console.log('requestr body is', requestBody);
             var rvalue = form.taxsystem_fields;
 
             return $http.get('./static-data/fakecalculateddata.json').then(function(response) {

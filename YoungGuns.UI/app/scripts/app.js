@@ -13,7 +13,7 @@ angularApp.config(function ($routeProvider) {
             templateUrl: 'views/create.html',
             controller: 'CreateCtrl'
         })
-        .when('/forms/:id/view', {
+        .when('/forms/view', {
             templateUrl: 'views/view.html',
             controller: 'ViewCtrl'
         })
