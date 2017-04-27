@@ -81,6 +81,7 @@
     <Compile Include="DAGUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReturnChangeset.cs" />
+    <Compile Include="TopoSortItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">

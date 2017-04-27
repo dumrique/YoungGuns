@@ -42,7 +42,8 @@ namespace YoungGuns.WebApi.Controllers
             //CreateTaxSystem(tsId, taxSystem);
 
             // save adjacency lists to storage
-            await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(taxSystem);
+            Dictionary<uint, List<uint>> topoInput = await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(taxSystem);
+            await TopoListBuilder.BuildAndStoreTopoList(topoInput);
 
             return Ok(tsId);
         }
