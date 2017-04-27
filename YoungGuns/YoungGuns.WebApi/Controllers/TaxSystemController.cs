@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using YoungGuns.Business;
+using YoungGuns.Data;
 using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 using YoungGuns.WebApi.Map;
@@ -40,10 +41,16 @@ namespace YoungGuns.WebApi.Controllers
         }
 
         [HttpPut]
-        public void Put(string id, [FromBody]PostTaxSystemRequest taxSystem)
+        public async Task<IHttpActionResult> Put(string id, [FromBody]PostTaxSystemRequest request)
         {
-            // save tax system to DB
-            //SaveTaxSystem(id, taxSystem);
+            var taxSystem = _map.Map<TaxSystem>(request);
+            taxSystem.Id = id;
+            await _dbHelper.UpsertTaxSystem(taxSystem);
+
+            await DAGUtilities.DeleteAdjacencyListTable(taxSystem.Name);
+            await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(request);
+
+            return Ok();
         }
         
     }

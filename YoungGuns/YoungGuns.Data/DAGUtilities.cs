@@ -14,11 +14,11 @@ namespace YoungGuns.Data
     {
         public static async Task StoreLeafAdjacencyListAsync(uint leafFieldId, string taxSystemName, List<uint> dependencyList)
         {
-            CloudTable table = await GetAdjacencyListTable();
+            CloudTable table = await GetAdjacencyListTable(taxSystemName);
 
             AdjacencyListItem adjLI = new AdjacencyListItem()
             {
-                PartitionKey = taxSystemName + "_leaf",
+                PartitionKey = "leaf",
                 RowKey = leafFieldId.ToString(),
                 DependentFields = new List<uint>(dependencyList)
             };
@@ -32,11 +32,11 @@ namespace YoungGuns.Data
 
         public static async Task StoreCalcAdjacencyListAsync(uint field_id, string taxSystemName, List<uint> depList)
         {
-            CloudTable table = await GetAdjacencyListTable();
+            CloudTable table = await GetAdjacencyListTable(taxSystemName);
 
             AdjacencyListItem adjLI = new AdjacencyListItem()
             {
-                PartitionKey = taxSystemName + "_calc",
+                PartitionKey = "calc",
                 RowKey = field_id.ToString(),
                 DependentFields = new List<uint>(depList)
             };
@@ -48,7 +48,24 @@ namespace YoungGuns.Data
             await table.ExecuteAsync(insertOperation);
         }
 
-        public async static Task<CloudTable> GetAdjacencyListTable()
+        public static async Task<CloudTable> GetAdjacencyListTable(string taxSystemName)
+        {
+            CloudTable table = GetAdjacencyTableListTableReference(taxSystemName);
+
+            // Create the table if it doesn't exist.
+            await table.CreateIfNotExistsAsync();
+
+            return table;
+        }
+
+        public static Task<bool> DeleteAdjacencyListTable(string taxSystemName)
+        {
+            CloudTable table = GetAdjacencyTableListTableReference(taxSystemName);
+
+            return table.DeleteIfExistsAsync();
+        }
+
+        public static CloudTable GetAdjacencyTableListTableReference(string taxSystemName)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
                 "DefaultEndpointsProtocol=https;AccountName=youngguns;AccountKey=NGct+PJexXQ0Eby6DhuOQ555dev7V6Z+lciJyunYM6aXVoEvzQD8Ig2FVv5YGiklTlPLaUENU4Cgg4N2pFzY2A==;EndpointSuffix=core.windows.net");
@@ -57,12 +74,7 @@ namespace YoungGuns.Data
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
             // Retrieve a reference to the table.
-            CloudTable table = tableClient.GetTableReference($"TaxSystemAdjacencyLists");
-
-            // Create the table if it doesn't exist.
-            await table.CreateIfNotExistsAsync();
-
-            return table;
+            return tableClient.GetTableReference($"TaxSystemAdjacencyLists_{taxSystemName}");
         }
 
     }

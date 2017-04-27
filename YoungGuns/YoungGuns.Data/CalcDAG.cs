@@ -87,7 +87,7 @@ namespace YoungGuns.Data
 
         private async Task<List<uint>> GetDependentFields(uint fieldId)
         {
-            CloudTable table = await DAGUtilities.GetAdjacencyListTable();
+            CloudTable table = await DAGUtilities.GetAdjacencyListTable(TaxSystem.Name);
             // Construct the query operation for the field list for the given field
             TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>(TaxSystem.Name, fieldId.ToString());
 
