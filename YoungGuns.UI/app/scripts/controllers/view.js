@@ -27,4 +27,8 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) 
 	$scope.calculate = function() {
 
 	}
+
+	$scope.calculate = function() {
+		
+	}
 });

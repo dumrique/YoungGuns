@@ -7,7 +7,7 @@
 	<form-directive form="previewFormx"></form-directive>
 </div>
 <div class="text-center">
-	<a class="btn btn-small btn-primary" ng-click="calculate()">Calculate</a>
+	<button class="btn btn-primary right" type="button" ng-click="calculate(form)"><i class="icon-eye-open icon-white"></i> Calculate</button>
 	<a class="btn btn-small btn-primary" ng-show="!showJson" ng-click="showJson = true">Show form json object</a>
 	<a class="btn btn-small btn-inverse" ng-show="showJson" ng-click="showJson = false">Hide form json object</a><br><br>
 </div>

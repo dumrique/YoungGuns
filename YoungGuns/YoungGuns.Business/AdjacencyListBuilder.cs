@@ -50,7 +50,7 @@ namespace YoungGuns.Business
         private static List<uint> ExtractFieldsFromFormula(string field_calculation)
         {
             List<uint> formulaFields = new List<uint>();
-            foreach (Match m in Regex.Matches(field_calculation, "\\[(.*)\\]"))
+            foreach (Match m in Regex.Matches(field_calculation, "\\[.*?\\]"))
                 formulaFields.Add(uint.Parse(m.Value));
 
             return formulaFields;

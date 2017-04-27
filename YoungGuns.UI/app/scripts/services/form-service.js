@@ -68,6 +68,11 @@ angularApp.service('FormService', function FormService($http) {
         },
         getSession: function() {
             return $http.get(baseurl + 'api/returnsession');
+           console.log('submitting form', form);
+            return $http.post('http://localhost:8100/api/taxsystem', form).then(function(response) {
+                console.log(response.data);
+                return response.data;
+            })
         }
     };
 });
