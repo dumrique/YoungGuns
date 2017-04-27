@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YoungGuns.Data;
+using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 
 namespace YoungGuns.Business
 {
     public class TopoListBuilder
     {
-        private static object DataAccess;
-
         public async static Task BuildAndStoreTopoList(Dictionary<uint, List<uint>> graph)
         {
             // topo sort

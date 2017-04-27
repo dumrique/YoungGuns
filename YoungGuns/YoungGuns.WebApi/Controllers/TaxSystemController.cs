@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using YoungGuns.Business;
-using YoungGuns.Data;
 using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 using YoungGuns.WebApi.Map;

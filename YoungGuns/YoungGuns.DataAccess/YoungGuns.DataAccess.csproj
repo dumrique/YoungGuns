@@ -54,14 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\AdjacencyListItem.cs" />
+    <Compile Include="DAGUtilities.cs" />
     <Compile Include="DbHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\YoungGuns.Data\YoungGuns.Data.csproj">
-      <Project>{189B5903-DB09-4F18-A25B-7ACC4802CD28}</Project>
-      <Name>YoungGuns.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">
       <Project>{A48455E6-7071-4F78-93ED-E1EBA6738DA0}</Project>
       <Name>YoungGuns.Shared</Name>

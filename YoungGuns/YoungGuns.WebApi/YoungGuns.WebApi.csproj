@@ -249,10 +249,6 @@
       <Project>{ad1890c7-2ca5-406a-b71e-47ce3c98a033}</Project>
       <Name>YoungGuns.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\YoungGuns.Data\YoungGuns.Data.csproj">
-      <Project>{189b5903-db09-4f18-a25b-7acc4802cd28}</Project>
-      <Name>YoungGuns.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">
       <Project>{a48455e6-7071-4f78-93ed-e1eba6738da0}</Project>
       <Name>YoungGuns.Shared</Name>

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using YoungGuns.Data;
 using YoungGuns.Shared;
 using Microsoft.Azure.Documents.Client;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage.Table;
+using YoungGuns.DataAccess.Contracts;
 
 namespace YoungGuns.DataAccess
 {
@@ -40,6 +41,18 @@ namespace YoungGuns.DataAccess
             var result = await _client.UpsertDocumentAsync(uri, system);
             return result.Resource.Id;
         }
+
+        public static async Task<List<uint>> GetDependentFields(string taxSystem, uint fieldId)
+        {
+            CloudTable table = await DAGUtilities.GetAdjacencyListTable(taxSystem);
+            // Construct the query operation for the field list for the given field
+            TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>("leaf", fieldId.ToString());
+
+            // Execute the retrieve operation.
+            TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
+            return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
+        }
+
 
         public string GetConnectionString()
         {
