@@ -16,10 +16,10 @@ namespace YoungGuns.WebApi.Controllers
         private readonly CalcDAG _dag;
         private readonly DbHelper _dbHelper;
 
-        public FieldController(string taxSystemId)
+        public FieldController()
         {
             _dbHelper = new DbHelper();
-            _dag = new CalcDAG(_dbHelper.GetTaxSystem(taxSystemId));
+            //_dag = new CalcDAG(_dbHelper.GetTaxSystem(taxSystemId));
         }
 
         /// <summary>

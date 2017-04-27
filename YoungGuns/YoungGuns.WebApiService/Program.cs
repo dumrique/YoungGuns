@@ -4,6 +4,7 @@ using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
+using YoungGuns.WebApi.Controllers;
 
 namespace YoungGuns.WebApiService
 {
@@ -24,6 +25,15 @@ namespace YoungGuns.WebApiService
                 ServiceRuntime.RegisterServiceAsync("WebApiServiceType",
                     context => new WebApiService(context)).GetAwaiter().GetResult();
 
+                try
+                {
+                    var controller = new TaxSystemController();
+                }
+                catch (Exception e)
+                {
+                    
+                    throw;
+                }
                 ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(WebApiService).Name);
 
                 // Prevents this host process from terminating so services keep running.
