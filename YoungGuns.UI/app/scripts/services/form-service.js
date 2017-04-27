@@ -52,12 +52,14 @@ angularApp.service('FormService', function FormService($http) {
             }
         ],
         form:function (id) {
-            return $http.get(baseurl + '/api/field').then(function (response) {
+            return $http.get('http://localhost:14522/api/taxsystem/single?id=' + id).then(function (response) {
                 return response.data;
             });
         },
         forms: function() {
-            return $http.get(baseurl + '/api/allforms');
+            return $http.get('http://localhost:14522/api/taxsystem').then(function(response) {
+                return response.data;
+            })
         },
         submit: function(form) {         
             for(var i=0; i < form.taxsystem_fields.length; i++) {

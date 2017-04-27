@@ -1,20 +1,7 @@
 'use strict';
 
 var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) {
-	$scope.forms = [
-		{
-			id: 1,
-			name: 'form1'
-		},
-		{
-			id: 2,
-			name: 'form2'
-		},
-		{
-			id: 3,
-			name: 'form3'
-		}
-	];
+	$scope.forms = FormService.forms();
 
 	$scope.selectForm = function(form) {
 		$scope.form = form;
@@ -22,7 +9,7 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) 
 	
     $scope.form = {};
 
-	$scope.update = function(id) {
-		console.log('update', id)
+	$scope.get = function() {
+		$scope.form = FormService.form($scope.form.id);
 	}
 });

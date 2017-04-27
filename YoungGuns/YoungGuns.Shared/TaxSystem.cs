@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace YoungGuns.Shared
 {
     public class TaxSystem
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
+        [JsonProperty("name")]
         public string Name { get; set; }
+        [JsonProperty("fields")]
+        public IEnumerable<FieldDto> Fields { get; set; }
     }
 }

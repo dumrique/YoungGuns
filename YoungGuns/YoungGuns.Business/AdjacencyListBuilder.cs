@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using YoungGuns.Shared;
@@ -10,7 +9,7 @@ namespace YoungGuns.Business
 {
     public class AdjacencyListBuilder
     {
-        public static async Task<Dictionary<uint, List<uint>>> ExtractAndStoreAdjacencyLists(TaxSystemDto dto)
+        public static async Task ExtractAndStoreAdjacencyList(PostTaxSystemRequest dto)
         {
             Dictionary<uint, List<uint>> adjLists = new Dictionary<uint, List<uint>>();
             Dictionary<uint, List<uint>> adjListsInverse = new Dictionary<uint, List<uint>>();

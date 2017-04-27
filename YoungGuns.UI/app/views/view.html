@@ -1,6 +1,6 @@
 <div class="text-center">
 	<div class="add-field">
-		<select name="repeatSelect" id="repeatSelect" ng-change="update(MAGIC_THING)">>
+		<select name="repeatSelect" id="repeatSelect" ng-model="form.id" ng-change="get()">>
       		<option ng-repeat="form in forms" value="{{form.id}}">{{form.name}}</option>
 		</select>
 	</div>
