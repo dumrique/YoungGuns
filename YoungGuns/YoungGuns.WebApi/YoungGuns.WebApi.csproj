@@ -250,7 +250,7 @@
       <Name>YoungGuns.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\YoungGuns.Data\YoungGuns.Data.csproj">
-      <Project>{189B5903-DB09-4F18-A25B-7ACC4802CD28}</Project>
+      <Project>{189b5903-db09-4f18-a25b-7acc4802cd28}</Project>
       <Name>YoungGuns.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">
