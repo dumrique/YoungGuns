@@ -55,9 +55,9 @@ namespace YoungGuns.DataAccess
 
         public List<uint> GetTopoList(string taxSystemId)
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystemTopoList).Name);
-            var query = _client.CreateDocumentQuery<TaxSystemTopoList>(uri);
-            List<TaxSystemTopoList> result = query.Where(item => item.TaxSystemId.Equals(taxSystemId)).ToList();
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var query = _client.CreateDocumentQuery<TaxSystem>(uri);
+            List<TaxSystem> result = query.Where(item => item.Id.Equals(taxSystemId)).ToList();
             return result.FirstOrDefault()?.TopoList;
         }
 
@@ -67,7 +67,7 @@ namespace YoungGuns.DataAccess
             var query = _client.CreateDocumentQuery<TaxSystem>(uri);
             TaxSystem result = query.Where(item => item.Id.Equals(topoList.TaxSystemId)).ToList().FirstOrDefault();
 
-            result.TopoList = topoList;
+            result.TopoList = topoList.TopoList;
 
             //var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystemTopoList).Name);
 

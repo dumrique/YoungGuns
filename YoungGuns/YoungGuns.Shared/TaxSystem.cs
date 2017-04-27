@@ -10,7 +10,7 @@ namespace YoungGuns.Shared
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("topoList")]
-        public TaxSystemTopoList TopoList { get; set; }
+        public List<uint> TopoList { get; set; }
         [JsonProperty("fields")]
         public IEnumerable<FieldDto> Fields { get; set; }
     }
