@@ -8,6 +8,8 @@ namespace YoungGuns.Shared
         /// User Id of the user pushing this changeset
         /// </summary>
         public string Owner { get; set; }
+
+        public string SessionGuid { get; set; }
         
         /// <summary>
         /// Return Id for the return
@@ -16,7 +18,7 @@ namespace YoungGuns.Shared
         /// <summary>
         /// Version of the return DAG on which changeset is based
         /// </summary>
-        public int BaseVersion { get; set; }
+        public uint BaseVersion { get; set; }
 
         /// <summary>
         /// Changeset values to be updated (key: field ID, value: new value)

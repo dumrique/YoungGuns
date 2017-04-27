@@ -11,7 +11,7 @@ namespace YoungGuns.Shared
     {
         void LoadTaxSystem(string taxSystemId);
 
-        Task<bool?> Calculate(CalcChangeset changeset);
+        Task<CalcResult> Calculate(CalcChangeset changeset);
 
     }
 }
