@@ -7,7 +7,7 @@ using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 using YoungGuns.WebApi.Map;
 
-namespace YoungGuns.WebApi.Controllers
+namespace YoungGuns.WebApiService.Controllers
 {
     [Route("api/taxsystem")]
     public class TaxSystemController : ApiController

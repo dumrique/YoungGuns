@@ -7,7 +7,7 @@ using YoungGuns.Shared;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace YoungGuns.WebApi.Controllers
+namespace YoungGuns.WebApiService.Controllers
 {
     [Route("api/field")]
     public class FieldController : ApiController
@@ -38,7 +38,7 @@ namespace YoungGuns.WebApi.Controllers
                 }
             };
 
-            _dag.ProcessChangeset(changeset);
+            //_dag.ProcessChangeset(changeset);
             return Ok();
         }
     }

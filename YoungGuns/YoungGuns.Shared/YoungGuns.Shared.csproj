@@ -99,6 +99,7 @@
     <Compile Include="GetTaxSystemRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response\GetTaxSystemResponse.cs" />
+    <Compile Include="CalcResult.cs" />
     <Compile Include="ReturnSnapshot.cs" />
     <Compile Include="TaxSystem.cs" />
     <Compile Include="TaxSystemTopoFieldList.cs" />

@@ -4,7 +4,7 @@ using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
-using YoungGuns.WebApi.Controllers;
+using YoungGuns.WebApiService.Controllers;
 
 namespace YoungGuns.WebApiService
 {
