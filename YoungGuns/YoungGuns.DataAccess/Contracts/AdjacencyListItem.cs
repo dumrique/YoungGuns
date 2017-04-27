@@ -6,7 +6,7 @@ namespace YoungGuns.DataAccess.Contracts
 {
     public class AdjacencyListItem : TableEntity
     {
-        public List<uint> DependentFields { get; set; }
+        public string DependentFields { get; set; }     // json serialized List<uint>
     }
 
 }

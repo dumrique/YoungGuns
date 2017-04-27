@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace YoungGuns.DataAccess
             {
                 PartitionKey = "leaf",
                 RowKey = leafFieldId.ToString(),
-                DependentFields = new List<uint>(dependencyList)
+                DependentFields = JsonConvert.SerializeObject(dependencyList)
             };
 
             // Create the TableOperation object that inserts the adjacency list item.
@@ -52,7 +53,7 @@ namespace YoungGuns.DataAccess
             {
                 PartitionKey = "calc",
                 RowKey = field_id.ToString(),
-                DependentFields = new List<uint>(depList)
+                DependentFields = JsonConvert.SerializeObject(depList)
             };
 
             // Create the TableOperation object that inserts the adjacency list item.

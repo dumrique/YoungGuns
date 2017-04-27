@@ -52,7 +52,7 @@ namespace YoungGuns.Business
             TaxSystem = taxSystem;
 
             FieldValues = new Dictionary<uint, object>();
-
+                
             //Load calc adjacency list from table storage
             AdjacencyList = DbHelper.GetCalcAdjacencyList(taxSystem.Name).GetAwaiter().GetResult();
 
@@ -70,10 +70,10 @@ namespace YoungGuns.Business
         public async Task<ReturnSnapshot> ProcessChangeset(CalcChangeset changeset)
         {
             SortedList<int, uint> fieldsToUpdate = new SortedList<int, uint>();  // key: topo index, value: fieldId            
-            Parallel.ForEach(changeset.NewValues.Keys, async (fieldId) =>
+            foreach(uint fieldId in changeset.newValues.Keys)
             {
                 // 1. update field values from the changeset itself
-                FieldValues[fieldId] = changeset.NewValues[fieldId];
+                FieldValues[fieldId] = changeset.newValues[fieldId];
 
                 // 2. traverse graph up from each changeset field
                 //    to create a list of fields to update
@@ -81,8 +81,12 @@ namespace YoungGuns.Business
 
                 // 3. merge this dictionary into the master dictionary for this changeset
                 foreach (uint id in depList)
-                    fieldsToUpdate.Add(TopoList.FindIndex((k) => k == id), id);
-            });
+                {
+                    int topoIndex = TopoList.FindIndex((k) => k == id);
+                    if (!fieldsToUpdate.ContainsKey(topoIndex))
+                        fieldsToUpdate.Add(topoIndex, id);
+                }
+            }
 
             // 4. Calc the necessary fields in order
             foreach (var depFieldId in fieldsToUpdate.Values)
@@ -90,9 +94,9 @@ namespace YoungGuns.Business
 
             var returnSnapshot = new ReturnSnapshot()
             {
-                ReturnId = changeset.ReturnId,
-                Version = changeset.BaseVersion++,
-                ChangesetFields = changeset.NewValues.Keys.ToList(),
+                ReturnId = changeset.returnId,
+                Version = changeset.baseVersion++,
+                ChangesetFields = changeset.newValues.Keys.ToList(),
                 FieldValues = FieldValues
             };
 

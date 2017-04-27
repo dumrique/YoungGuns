@@ -2,7 +2,7 @@
 
 angularApp.service('FormService', function FormService($http) {
     const baseurl = 'http://youngguns.southcentralus.cloudapp.azure.com:80/';
-    const localurl = 'http://localhost:14522/';
+    const localurl = '	Http://localhost:80/';
     var formsJsonPath = './static-data/sample_forms.json';
 
     return {
@@ -53,26 +53,26 @@ angularApp.service('FormService', function FormService($http) {
             }
         ],
         form:function (id) {
-            return $http.get(baseurl + 'api/taxsystem/single?id=' + id);
+            return $http.get(localurl + 'api/taxsystem/single?id=' + id);
         },
         forms: function() {
-            return $http.get(baseurl + 'api/taxsystem');
+            return $http.get(localurl + 'api/taxsystem');
         },
         submit: function(form) {         
 //            for(var i=0; i < form.taxsystem_fields.length; i++) {
 //                var field = form.taxsystem_fields[i];       
 //                field.type = field.field_calculation ? 'calc' : 'info';
 //            }
-            return $http.post(baseurl + 'api/taxsystem', form);
+            return $http.post(localurl + 'api/taxsystem', form);
         },
         getSession: function() {
-            return $http.get(baseurl + 'api/returnsession');
+            return $http.get(localurl + 'api/returnsession');
         },
         calculate: function(form, originalForm, sessionGuid, taxSystemId) {
             sessionGuid = sessionGuid.replace(/['"]+/g, '');
             //console.log('KWEJFOIQEWJFOPIJWEIOFJ', sessionGuid.replace(/['"]+/g, ''));
             var session = {};
-            $http.post(baseurl + 'api/returnsession', {sessionGuid: sessionGuid, taxSystemId: taxSystemId}).then(function(response) {
+            $http.post(localurl + 'api/returnsession', {sessionGuid: sessionGuid, taxSystemId: taxSystemId}).then(function(response) {
                 session.sessionId = sessionGuid;
                 session.returnId = response.data.returnId;
                 session.baseVersion = response.data.baseVersion;
@@ -91,7 +91,7 @@ angularApp.service('FormService', function FormService($http) {
                 console.log('NEW VALUES', requestBody.newValues)
                 var rvalue = form.fields;
 
-                $http.put(baseurl + 'api/return', requestBody).then(function(response) {
+                $http.put(localurl + 'api/return', requestBody).then(function(response) {
                     //update the given taxsystem fields with the values returned here.
 
                     Object.keys(response.data.returnSnapshot.fieldValues).forEach(function(key, index) {

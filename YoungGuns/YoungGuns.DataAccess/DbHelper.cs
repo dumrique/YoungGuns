@@ -6,6 +6,7 @@ using Microsoft.Azure.Documents.Client;
 using System.Linq;
 using Microsoft.WindowsAzure.Storage.Table;
 using YoungGuns.DataAccess.Contracts;
+using Newtonsoft.Json;
 
 namespace YoungGuns.DataAccess
 {
@@ -50,7 +51,7 @@ namespace YoungGuns.DataAccess
 
             // Execute the retrieve operation.
             TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
-            return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
+            return JsonConvert.DeserializeObject<List<uint>>(((AdjacencyListItem)retrievedResult.Result)?.DependentFields);
         }
 
         public List<uint> GetTopoList(string taxSystemId)
@@ -107,7 +108,7 @@ namespace YoungGuns.DataAccess
             {
                 uint id;
                 if (uint.TryParse(li.RowKey, out id))
-                    dict[id] = li.DependentFields;
+                    dict[id] = JsonConvert.DeserializeObject<List<uint>>(li.DependentFields);
                 else
                     throw new Exception($"Invalid Field Id: {li.RowKey}");
             }

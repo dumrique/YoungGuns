@@ -16,8 +16,17 @@ namespace YoungGuns.WebApiService.Controllers
         [HttpPut]
         public async Task<IHttpActionResult> Put([FromBody]CalcChangeset calcChangeset)
         {
-            var calcService = ServiceProxy.Create<ICalcService>(new Uri($"fabric:/YoungGunsApp/CalcService_{calcChangeset.SessionGuid}"));           
-            return Ok(await calcService.Calculate(calcChangeset));
+            CalcResult result = null;
+            var calcService = ServiceProxy.Create<ICalcService>(new Uri($"fabric:/YoungGunsApp/CalcService_{calcChangeset.sessionGuid}"));
+            try
+            {
+                result = await calcService.Calculate(calcChangeset);
+            }
+            catch (Exception ex)
+            {
+                return Ok(1);
+            }
+            return Ok(result);
         }
     }
 }

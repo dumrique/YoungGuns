@@ -58,14 +58,14 @@ namespace YoungGuns.CalcService
             }
 
             // TODO: get current version of most recent ReturnSnapshot.
-            //       if changeset.BaseVersion is different, 
+            //       if changeset.baseVersion is different, 
             //       run DAGUtilies.CheckForMergeConflicts.
-            if (_dag.ReturnVersion != changeset.BaseVersion)
+            if (_dag.ReturnVersion != changeset.baseVersion)
             {
                 // retrieve the last changeset from DocumentDb
-                var lastChangesetFields = _dbHelper.GetReturnChangesetFields(changeset.ReturnId, _dag.ReturnVersion);
+                var lastChangesetFields = _dbHelper.GetReturnChangesetFields(changeset.returnId, _dag.ReturnVersion);
 
-                retVal = await DAGUtilities.CheckForMergeConflicts(TaxSystem.Name, lastChangesetFields, changeset.NewValues.Keys.ToList());
+                retVal = await DAGUtilities.CheckForMergeConflicts(TaxSystem.Name, lastChangesetFields, changeset.newValues.Keys.ToList());
                 if (retVal == true)
                     return new CalcResult() { MergeResult = true };
             }

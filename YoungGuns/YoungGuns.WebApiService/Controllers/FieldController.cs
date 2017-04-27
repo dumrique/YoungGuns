@@ -30,9 +30,9 @@ namespace YoungGuns.WebApiService.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody]PostFieldRequest field)
         {
-            CalcChangeset changeset = new CalcChangeset()   // TODO Add BaseVersion, Owner, ReturnId
+            CalcChangeset changeset = new CalcChangeset()   // TODO Add baseVersion, Owner, returnId
             {
-                NewValues = new Dictionary<uint, float>()
+                newValues = new Dictionary<uint, float>()
                 {
                     { field.field_id, field.field_value }
                 }

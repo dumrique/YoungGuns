@@ -40,12 +40,11 @@ namespace YoungGuns.WebApiService.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody]PostTaxSystemRequest request)
         {
-            var taxSystem = _map.Map<TaxSystem>(request);
-
-            var id = await _dbHelper.UpsertTaxSystem(taxSystem);
-
             // fix text-to-uint mapping for field calc formulas
             DAGUtilities.FixCalcFormulaMappings(request);
+
+            var taxSystem = _map.Map<TaxSystem>(request);
+            var id = await _dbHelper.UpsertTaxSystem(taxSystem);
 
             // save adjacency lists to storage
             Dictionary<uint, List<uint>> topoInput = await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(request);
