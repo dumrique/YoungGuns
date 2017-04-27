@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
-using YoungGuns.Data;
 using YoungGuns.Shared;
 using YoungGuns.DataAccess;
+using Microsoft.ServiceFabric.Services.Remoting.Runtime;
+using YoungGuns.Business;
 
 namespace YoungGuns.CalcService
 {
@@ -19,29 +20,55 @@ namespace YoungGuns.CalcService
     internal sealed class CalcService : StatefulService, ICalcService
     {
         private CalcDAG _dag;
-        private TaxSystem _taxSystem;
+        private DbHelper _dbHelper;
+
+        public TaxSystem TaxSystem { get; set; }
 
         public CalcService(StatefulServiceContext context)
             : base(context)
-        { }
-
-        public TaxSystem GetLoadedTaxSystem()
         {
-            return _taxSystem;
+            _dbHelper = new DbHelper();
         }
 
-        public void Calculate(CalcChangeset changeset, string taxSystemId)
+        public void LoadTaxSystem(string taxSystemId)
+        {    
+            // load tax system    
+            this.TaxSystem = _dbHelper.GetTaxSystem(taxSystemId);
+            
+            // reinitialize DAG (loads field formulas too)
+            _dag = new CalcDAG(this.TaxSystem);
+        }
+
+        /// <summary>
+        /// Returns     null for good calc, 
+        ///             true for merge conflict,
+        ///             false for auto-merge and good calc.
+        /// </summary>
+        /// <param name="changeset"></param>
+        /// <returns></returns>
+        public async Task<bool?> Calculate(CalcChangeset changeset)
         {
+            bool? retVal = null;
             if (_dag == null)
             {
-                var dbHelper = new DbHelper();
-                _taxSystem = dbHelper.GetTaxSystem(taxSystemId);
-
-                _dag = new CalcDAG(_taxSystem);
-                // TODO Load from table storage
+                // TODO: loop and wait till we DO have a _dag?
+                //       or perhaps just throw and exception
             }
 
+            // TODO: get current version of most recent ReturnSnapshot.
+            //       if changeset.BaseVersion is different, 
+            //       run DAGUtilies.CheckForMergeConflicts.
+            if (_dag.ReturnVersion != changeset.BaseVersion)
+            {
+                // retrieve the last changeset from DocumentDb
+                CalcChangeset lastChangeset = _dbHelper.GetReturnChangeset(changeset.ReturnId, _dag.ReturnVersion);
+
+                return await DAGUtilities.CheckForMergeConflicts(TaxSystem.Name, lastChangeset, changeset);
+            }
+
+            // otherwise, process the changeset
             _dag.ProcessChangeset(changeset);
+            return retVal;
         }
 
         /// <summary>
@@ -53,7 +80,7 @@ namespace YoungGuns.CalcService
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            return new ServiceReplicaListener[0];
+            return new[] { new ServiceReplicaListener(context => this.CreateServiceRemotingListener(context)) };
         }
 
         /// <summary>

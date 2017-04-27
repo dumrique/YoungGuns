@@ -17,6 +17,12 @@ namespace YoungGuns.Business
         public TaxSystem TaxSystem { get; set; }
 
         /// <summary>
+        /// Version of the FieldValues snapshot currently held in this DAG
+        /// </summary>
+        public uint ReturnVersion { get; set; }
+
+
+        /// <summary>
         /// Adjacency list defining field dependencies
         /// </summary> 
         public Dictionary<uint, List<uint>> AdjacencyList { get; set; }
@@ -55,6 +61,9 @@ namespace YoungGuns.Business
             {
                 FieldFormulas[field.field_id] = field.field_calculation;
             }
+
+            var dbHelper = new DbHelper();
+            TopoList = dbHelper.GetTopoList(TaxSystem.Id);
         }
 
         public async void ProcessChangeset(CalcChangeset changeset)

@@ -53,15 +53,33 @@ namespace YoungGuns.DataAccess
             return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
         }
 
+        public List<uint> GetTopoList(string taxSystemId)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var query = _client.CreateDocumentQuery<TaxSystemTopoFieldList>(uri);
+            List<TaxSystemTopoFieldList> result = query.Where(item => item.Id.Equals(taxSystemId)).ToList();
+            return result.FirstOrDefault()?.TopoList;
+        }
+
         public async Task SaveTopoList(TaxSystemTopoFieldList topoList)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
-            //var query = _client.CreateDocumentQuery<TaxSystemTopoFieldList>(uri);
-            //List<TaxSystemTopoFieldList> result = query.Where(item => item.Id.Equals(id)).ToList();
-            //TaxSystem taxSystem = result.FirstOrDefault();
 
             // add the TopoList to the TaxSystem object
             var result = await _client.UpsertDocumentAsync(uri, topoList);
+        }
+
+        public List<uint> GetReturnChangesetFields(string returnId, uint returnVersion)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var query = _client.CreateDocumentQuery<ReturnSnapshot>(uri);
+            List<ReturnSnapshot> result = query.Where(item => item.Version.Equals($"{returnId}_{returnVersion}")).ToList();
+            return result.FirstOrDefault()?.ChangesetFields;
+        }
+
+        public CalcChangeset GetReturnChangeset(string returnId, uint returnVersion)
+        {
+            throw new NotImplementedException();
         }
 
         public static async Task<Dictionary<uint, List<uint>>> GetCalcAdjacencyList(string taxSystemName)
@@ -83,8 +101,7 @@ namespace YoungGuns.DataAccess
             }
             return dict;
         }
-
-
+        
         public string GetConnectionString()
         {
             return "AccountEndpoint=https://youngguns.documents.azure.com:443/;AccountKey=F7a8aOEM1XHZLkkxJBjY9gyAMM5kjWxj1mNgIYxN2DU409oV3NoNEVpEzpwqTc6PPK6ZXWhGHZI6hqgCSjsgtA==;";
