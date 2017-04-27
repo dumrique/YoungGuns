@@ -50,7 +50,7 @@ namespace YoungGuns.DataAccess
             return dag;
         }
 
-        public async Task InsertCalcDag(CalcDAG dag)
+        public async Task UpsertCalcDag(CalcDAG dag)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
             var result = await _client.UpsertDocumentAsync(uri, dag);
