@@ -10,7 +10,7 @@ namespace YoungGuns.Business
 {
     public class TopoListBuilder
     {
-        public async static Task BuildAndStoreTopoList(Dictionary<uint, List<uint>> graph)
+        public async static Task BuildAndStoreTopoList(string taxSystemId, Dictionary<uint, List<uint>> graph)
         {
             // topo sort
             var sorted = new List<uint>();
@@ -19,9 +19,9 @@ namespace YoungGuns.Business
             foreach (var key in graph.Keys)
                 Visit(graph, key, sorted, visited);
 
-            // sorted is now the topo list
+            // "sorted" is now the topo list
             //      so store it in table storage
-
+            await new DbHelper().SaveTopoList(new TaxSystemTopoFieldList() { Id = taxSystemId, TopoList = sorted });
         }
 
         public static void Visit(Dictionary<uint, List<uint>> graph, uint itemId, List<uint> sorted, Dictionary<uint, bool> visited)

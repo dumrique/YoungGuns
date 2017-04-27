@@ -46,7 +46,7 @@ namespace YoungGuns.WebApi.Controllers
 
             // save adjacency lists to storage
             Dictionary<uint, List<uint>> topoInput = await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(request);
-            await TopoListBuilder.BuildAndStoreTopoList(topoInput);
+            await TopoListBuilder.BuildAndStoreTopoList(id, topoInput);
 
             return Ok(id);
         }
