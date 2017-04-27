@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Fabric;
+using System.Fabric.Description;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,10 +25,12 @@ namespace YoungGuns.WebApiService
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
-            return new[] 
-            {
-                new ServiceInstanceListener(initParams => new OwinCommunicationListener("api", new Startup(), initParams))
-            };
+            var endpoints = Context.CodePackageActivationContext.GetEndpoints()
+                                   .Where(endpoint => endpoint.Protocol == EndpointProtocol.Http || endpoint.Protocol == EndpointProtocol.Https)
+                                   .Select(endpoint => endpoint.Name);
+
+            return endpoints.Select(endpoint => new ServiceInstanceListener(
+                serviceContext => new OwinCommunicationListener(Startup.ConfigureApp, serviceContext, ServiceEventSource.Current, endpoint), endpoint));
         }
     }
 }

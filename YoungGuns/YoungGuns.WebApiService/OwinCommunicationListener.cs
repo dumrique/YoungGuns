@@ -8,80 +8,146 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
+using Owin;
 
 namespace YoungGuns.WebApiService
 {
-    public class OwinCommunicationListener : ICommunicationListener
+    internal class OwinCommunicationListener : ICommunicationListener
     {
-        private readonly IOwinAppBuilder _startup;
-        private readonly string _appRoot;
-        private readonly StatelessServiceContext _parameters;
+        private readonly ServiceEventSource eventSource;
+        private readonly Action<IAppBuilder> startup;
+        private readonly ServiceContext serviceContext;
+        private readonly string endpointName;
+        private readonly string appRoot;
 
-        private string _listeningAddress;
+        private IDisposable webApp;
+        private string publishAddress;
+        private string listeningAddress;
 
-        private IDisposable _serverHandle;
-
-        public OwinCommunicationListener(string appRoot, IOwinAppBuilder startup, StatelessServiceContext serviceInitializationParameters)
+        public OwinCommunicationListener(Action<IAppBuilder> startup, ServiceContext serviceContext, ServiceEventSource eventSource, string endpointName)
+            : this(startup, serviceContext, eventSource, endpointName, null)
         {
-            _startup = startup;
-            _appRoot = appRoot;
-            _parameters = serviceInitializationParameters;
+        }
+
+        public OwinCommunicationListener(Action<IAppBuilder> startup, ServiceContext serviceContext, ServiceEventSource eventSource, string endpointName, string appRoot)
+        {
+            if (startup == null)
+            {
+                throw new ArgumentNullException(nameof(startup));
+            }
+
+            if (serviceContext == null)
+            {
+                throw new ArgumentNullException(nameof(serviceContext));
+            }
+
+            if (endpointName == null)
+            {
+                throw new ArgumentNullException(nameof(endpointName));
+            }
+
+            if (eventSource == null)
+            {
+                throw new ArgumentNullException(nameof(eventSource));
+            }
+
+            this.startup = startup;
+            this.serviceContext = serviceContext;
+            this.endpointName = endpointName;
+            this.eventSource = eventSource;
+            this.appRoot = appRoot;
         }
 
         public Task<string> OpenAsync(CancellationToken cancellationToken)
         {
-            var serviceEndpoint =
-                _parameters
-                .CodePackageActivationContext
-                .GetEndpoint("ServiceEndpoint");
+            var serviceEndpoint = this.serviceContext.CodePackageActivationContext.GetEndpoint(this.endpointName);
+            var protocol = serviceEndpoint.Protocol;
+            int port = serviceEndpoint.Port;
 
-            var port = serviceEndpoint.Port;
-            var root =
-                String.IsNullOrWhiteSpace(_appRoot)
-                ? String.Empty
-                : _appRoot.TrimEnd('/') + '/';
+            if (this.serviceContext is StatefulServiceContext)
+            {
+                StatefulServiceContext statefulServiceContext = this.serviceContext as StatefulServiceContext;
 
-            _listeningAddress = String.Format(
-                CultureInfo.InvariantCulture,
-                "http://+:{0}/{1}",
-                port,
-                root
-            );
-            _serverHandle = WebApp.Start(
-                _listeningAddress,
-                appBuilder => _startup.Configuration(appBuilder)
-            );
+                this.listeningAddress = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0}://+:{1}/{2}{3}/{4}/{5}",
+                    protocol,
+                    port,
+                    string.IsNullOrWhiteSpace(this.appRoot)
+                        ? string.Empty
+                        : this.appRoot.TrimEnd('/') + '/',
+                    statefulServiceContext.PartitionId,
+                    statefulServiceContext.ReplicaId,
+                    Guid.NewGuid());
+            }
+            else if (this.serviceContext is StatelessServiceContext)
+            {
+                this.listeningAddress = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0}://+:{1}/{2}",
+                    protocol,
+                    port,
+                    string.IsNullOrWhiteSpace(this.appRoot)
+                        ? string.Empty
+                        : this.appRoot.TrimEnd('/') + '/');
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
 
-            var publishAddress = _listeningAddress.Replace(
-                "+",
-                FabricRuntime.GetNodeContext().IPAddressOrFQDN
-            );
+            this.publishAddress = this.listeningAddress.Replace("+", FabricRuntime.GetNodeContext().IPAddressOrFQDN);
 
-            ServiceEventSource.Current.Message("Listening on {0}", publishAddress);
-            return Task.FromResult(publishAddress);
-        }
+            try
+            {
+                this.eventSource.Message("Starting web server on " + this.listeningAddress);
 
-        public void Abort()
-        {
-            StopWebServer();
+                this.webApp = WebApp.Start(this.listeningAddress, appBuilder => this.startup.Invoke(appBuilder));
+
+                this.eventSource.Message("Listening on " + this.publishAddress);
+
+                return Task.FromResult(this.publishAddress);
+            }
+            catch (Exception ex)
+            {
+                this.eventSource.Message("Web server failed to open endpoint {0}. {1}", this.endpointName, ex.ToString());
+
+                this.StopWebServer();
+
+                throw;
+            }
         }
 
         public Task CloseAsync(CancellationToken cancellationToken)
         {
-            StopWebServer();
+            this.eventSource.Message("Closing web server on endpoint {0}", this.endpointName);
+
+            this.StopWebServer();
+
             return Task.FromResult(true);
+        }
+
+        public void Abort()
+        {
+            this.eventSource.Message("Aborting web server on endpoint {0}", this.endpointName);
+
+            this.StopWebServer();
         }
 
         private void StopWebServer()
         {
-            if (_serverHandle == null)
-                return;
-
-            try
+            if (this.webApp != null)
             {
-                _serverHandle.Dispose();
+                try
+                {
+                    this.webApp.Dispose();
+                }
+                catch (ObjectDisposedException)
+                {
+                    // no-op
+                }
             }
-            catch (ObjectDisposedException) { }
         }
     }
+}
 }

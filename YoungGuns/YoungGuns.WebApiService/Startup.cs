@@ -11,14 +11,14 @@ using Owin;
 
 namespace YoungGuns.WebApiService
 {
-    public class Startup : IOwinAppBuilder
+    public static class Startup
     {
         public static void ConfigureFormatters(MediaTypeFormatterCollection formatters)
         {
             formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
         }
 
-        public void Configuration(IAppBuilder appBuilder)
+        public static void ConfigureApp(IAppBuilder appBuilder)
         {
             var config = new HttpConfiguration();
 
