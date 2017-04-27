@@ -21,7 +21,7 @@ namespace YoungGuns.Business
 
             // "sorted" is now the topo list
             //      so store it in table storage
-            await new DbHelper().SaveTopoList(new TaxSystemTopoFieldList() { Id = taxSystemId, TopoList = sorted });
+            await new DbHelper().SaveTopoList(new TaxSystemTopoList() { TaxSystemId = taxSystemId, TopoList = sorted });
         }
 
         public static void Visit(Dictionary<uint, List<uint>> graph, uint itemId, List<uint> sorted, Dictionary<uint, bool> visited)

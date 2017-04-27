@@ -55,18 +55,24 @@ namespace YoungGuns.DataAccess
 
         public List<uint> GetTopoList(string taxSystemId)
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
-            var query = _client.CreateDocumentQuery<TaxSystemTopoFieldList>(uri);
-            List<TaxSystemTopoFieldList> result = query.Where(item => item.Id.Equals(taxSystemId)).ToList();
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystemTopoList).Name);
+            var query = _client.CreateDocumentQuery<TaxSystemTopoList>(uri);
+            List<TaxSystemTopoList> result = query.Where(item => item.TaxSystemId.Equals(taxSystemId)).ToList();
             return result.FirstOrDefault()?.TopoList;
         }
 
-        public async Task SaveTopoList(TaxSystemTopoFieldList topoList)
+        public async Task SaveTopoList(TaxSystemTopoList topoList)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var query = _client.CreateDocumentQuery<TaxSystem>(uri);
+            TaxSystem result = query.Where(item => item.Id.Equals(topoList.TaxSystemId)).ToList().FirstOrDefault();
+
+            result.TopoList = topoList;
+
+            //var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystemTopoList).Name);
 
             // add the TopoList to the TaxSystem object
-            var result = await _client.UpsertDocumentAsync(uri, topoList);
+            await _client.UpsertDocumentAsync(uri, result);
         }
 
         public List<uint> GetReturnChangesetFields(string returnId, uint returnVersion)

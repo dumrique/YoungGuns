@@ -102,7 +102,7 @@
     <Compile Include="CalcResult.cs" />
     <Compile Include="ReturnSnapshot.cs" />
     <Compile Include="TaxSystem.cs" />
-    <Compile Include="TaxSystemTopoFieldList.cs" />
+    <Compile Include="TaxSystemTopoList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
