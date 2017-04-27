@@ -61,6 +61,9 @@ namespace YoungGuns.Business
             {
                 FieldFormulas[field.field_id] = field.field_calculation;
             }
+
+            var dbHelper = new DbHelper();
+            TopoList = dbHelper.GetTopoList(TaxSystem.Id);
         }
 
         public async void ProcessChangeset(CalcChangeset changeset)

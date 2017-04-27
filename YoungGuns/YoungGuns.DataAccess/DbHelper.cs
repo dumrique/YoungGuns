@@ -102,6 +102,11 @@ namespace YoungGuns.DataAccess
             return dict;
         }
 
+        public static CalcChangeset GetReturnChangeset(string returnId, uint returnVersion)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public string GetConnectionString()
         {
