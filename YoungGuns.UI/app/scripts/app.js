@@ -6,19 +6,19 @@ angularApp.config(function ($routeProvider) {
 
     $routeProvider
         .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl'
+            templateUrl: 'views/create.html',
+            controller: 'CreateCtrl'
         })
         .when('/forms/create', {
             templateUrl: 'views/create.html',
             controller: 'CreateCtrl'
         })
-        .when('/forms/:id/view', {
+        .when('/forms/view', {
             templateUrl: 'views/view.html',
             controller: 'ViewCtrl'
         })
         .otherwise({
-            redirectTo: '/'
+            redirectTo: '/forms/create'
         });
 
 }).run(['$rootScope',  function() {}]);

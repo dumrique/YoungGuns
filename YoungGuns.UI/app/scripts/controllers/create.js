@@ -34,7 +34,6 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
             "field_id" : $scope.addField.lastAddedID,
             "field_title" : "New field - " + ($scope.addField.lastAddedID),
             "field_type" : $scope.addField.new,
-            "field_value" : "",
             "field_required" : true,
 			"field_disabled" : false
         };
@@ -128,6 +127,8 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
     }
 
     $scope.submit = function(form) {
-        var id = FormService.submit(form);
+        FormService.submit(form).then(function(response) {
+            var id = response.data;
+        })
     }
 });
