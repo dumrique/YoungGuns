@@ -45,9 +45,18 @@ namespace YoungGuns.Data
         public CalcDAG(TaxSystem taxSystem)
         {
             TaxSystem = taxSystem;
-            AdjacencyList = new Dictionary<uint, List<uint>>();
+
             FieldValues = new Dictionary<uint, float>();
+
+            //Load calc adjacency list from table storage
+            AdjacencyList = GetCalcAdjacencyList();            
+
+            //Load field formulas from TaxSystem
             FieldFormulas = new Dictionary<uint, string>();
+            foreach (var field in taxSystem.Fields.ToList())
+            {
+                FieldFormulas[field.field_id] = field.field_calculation;
+            }            
         }
 
         public async void ProcessChangeset(CalcChangeset changeset)
@@ -94,6 +103,26 @@ namespace YoungGuns.Data
             // Execute the retrieve operation.
             TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
             return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
+        }
+
+        private Dictionary<uint, List<uint>> GetCalcAdjacencyList()
+        {
+            CloudTable table = DAGUtilities.GetAdjacencyListTable(TaxSystem.Name).GetAwaiter().GetResult();
+
+            TableQuery<AdjacencyListItem> query = new TableQuery<AdjacencyListItem>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "calc"));
+
+            var listItems = table.ExecuteQuery(query).ToList();
+            var dict = new Dictionary<uint, List<uint>>();
+            foreach (var li in listItems)
+            {
+                uint id;
+                if (uint.TryParse(li.RowKey, out id))
+                    dict[id] = li.DependentFields;
+                else
+                    throw new Exception($"Invalid Field Id: {li.RowKey}");
+            }
+            return dict;
         }
     }       
 }
