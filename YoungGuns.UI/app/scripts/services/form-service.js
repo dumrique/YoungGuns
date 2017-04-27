@@ -57,7 +57,9 @@ angularApp.service('FormService', function FormService($http) {
             });
         },
         forms: function() {
-            return $http.get(baseurl + '/api/allforms');
+            return $http.get('http://localhost:14522/api/taxsystem').then(function(response) {
+                return response.data;
+            })
         },
         submit: function(form) {         
             for(var i=0; i < form.taxsystem_fields.length; i++) {
