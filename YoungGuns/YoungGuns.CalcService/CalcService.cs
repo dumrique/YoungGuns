@@ -9,27 +9,48 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using YoungGuns.Data;
 using YoungGuns.Shared;
+using YoungGuns.DataAccess;
+using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 
 namespace YoungGuns.CalcService
 {
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class CalcService : StatefulService
+    internal sealed class CalcService : StatefulService, ICalcService
     {
         private CalcDAG _dag;
+        private DbHelper _dbHelper;
 
-        public TaxSystem _taxSystem { get; set; }
+        public TaxSystem TaxSystem { get; set; }
 
         public CalcService(StatefulServiceContext context)
             : base(context)
-        { }
+        {
+            _dbHelper = new DbHelper();
+        }
+
+        public async Task LoadTaxSystem(string taxSystemId)
+        {    
+            // load tax system    
+            this.TaxSystem = _dbHelper.GetTaxSystem(taxSystemId);
+            
+            // reinitialize DAG (loads field formulas too)
+            _dag = new CalcDAG(this.TaxSystem);
+
+            // load AdjacencyLists
+            _dag.AdjacencyList = await DbHelper.GetCalcAdjacencyList(TaxSystem.Name);
+
+            // load TopoList for this tax system
+            _dag.TopoList = _dbHelper.GetTopoList(TaxSystem.Id);
+        }
 
         public void Calculate(CalcChangeset changeset)
         {
             if (_dag == null)
             {
                 // TODO Load DAG
+                //_dag.
             }
 
             _dag.ProcessChangeset(changeset);
@@ -44,7 +65,7 @@ namespace YoungGuns.CalcService
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            return new ServiceReplicaListener[0];
+            return new[] { new ServiceReplicaListener(context => this.CreateServiceRemotingListener(context)) };
         }
 
         /// <summary>

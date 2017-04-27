@@ -53,12 +53,17 @@ namespace YoungGuns.DataAccess
             return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
         }
 
+        public List<uint> GetTopoList(string taxSystemId)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var query = _client.CreateDocumentQuery<TaxSystemTopoFieldList>(uri);
+            List<TaxSystemTopoFieldList> result = query.Where(item => item.Id.Equals(taxSystemId)).ToList();
+            return result.FirstOrDefault()?.TopoList;
+        }
+
         public async Task SaveTopoList(TaxSystemTopoFieldList topoList)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
-            //var query = _client.CreateDocumentQuery<TaxSystemTopoFieldList>(uri);
-            //List<TaxSystemTopoFieldList> result = query.Where(item => item.Id.Equals(id)).ToList();
-            //TaxSystem taxSystem = result.FirstOrDefault();
 
             // add the TopoList to the TaxSystem object
             var result = await _client.UpsertDocumentAsync(uri, topoList);
