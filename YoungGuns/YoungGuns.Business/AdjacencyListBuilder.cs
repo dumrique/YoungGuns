@@ -9,7 +9,7 @@ namespace YoungGuns.Business
 {
     public class AdjacencyListBuilder
     {
-        public static async Task ExtractAndStoreAdjacencyList(PostTaxSystemRequest dto)
+        public static async Task<Dictionary<uint, List<uint>>> ExtractAndStoreAdjacencyLists(PostTaxSystemRequest dto)
         {
             Dictionary<uint, List<uint>> adjLists = new Dictionary<uint, List<uint>>();
             Dictionary<uint, List<uint>> adjListsInverse = new Dictionary<uint, List<uint>>();

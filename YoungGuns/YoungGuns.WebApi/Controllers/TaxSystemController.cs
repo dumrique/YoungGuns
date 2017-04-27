@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using YoungGuns.Business;
@@ -45,10 +46,10 @@ namespace YoungGuns.WebApi.Controllers
             var id = await _dbHelper.UpsertTaxSystem(taxSystem);
 
             // save adjacency lists to storage
-            Dictionary<uint, List<uint>> topoInput = await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(taxSystem);
+            Dictionary<uint, List<uint>> topoInput = await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(request);
             await TopoListBuilder.BuildAndStoreTopoList(topoInput);
 
-            return Ok(tsId);
+            return Ok(id);
         }
 
         [HttpPut]
@@ -59,7 +60,7 @@ namespace YoungGuns.WebApi.Controllers
             await _dbHelper.UpsertTaxSystem(taxSystem);
 
             await DAGUtilities.DeleteAdjacencyListTable(taxSystem.Name);
-            await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(request);
+            await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(request);
 
             return Ok();
         }
