@@ -47,8 +47,9 @@
     <Compile Include="FieldDto.cs" />
     <Compile Include="PostFieldRequest.cs" />
     <Compile Include="PostTaxSystemRequest.cs" />
-	<Compile Include="GetTaxSystemRequest.cs" />
+    <Compile Include="GetTaxSystemRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response\GetTaxSystemResponse.cs" />
     <Compile Include="TaxSystem.cs" />
   </ItemGroup>
   <ItemGroup>

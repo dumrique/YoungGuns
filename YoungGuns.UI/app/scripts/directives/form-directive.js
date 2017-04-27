@@ -5,7 +5,7 @@ angularApp.directive('formDirective', function () {
         controller: function($scope){
             $scope.submit = function(){
                 alert('Form submitted..');
-                $scope.form.submitted = true;
+                //$scope.form.submitted = true;
             }
 
             $scope.cancel = function(){

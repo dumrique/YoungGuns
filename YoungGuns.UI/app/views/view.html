@@ -4,8 +4,8 @@
       		<option ng-repeat="form in forms" value="{{form.id}}">{{form.name}}</option>
 		</select>
 	</div>
+	<form-directive form="previewFormx"></form-directive>
 </div>
-<form-directive form="form"></form-directive><hr>
 <div class="text-center">
 	<a class="btn btn-small btn-primary" ng-show="!showJson" ng-click="showJson = true">Show form json object</a>
 	<a class="btn btn-small btn-inverse" ng-show="showJson" ng-click="showJson = false">Hide form json object</a><br><br>
