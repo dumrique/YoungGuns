@@ -44,6 +44,9 @@ namespace YoungGuns.WebApi.Controllers
         {
             var taxSystem = _map.Map<TaxSystem>(request);
 
+            // fix text-to-uint mapping for field calc formulas
+            DAGUtilities.FixCalcFormulaMappings(request);
+
             var id = await _dbHelper.UpsertTaxSystem(taxSystem);
 
             // save adjacency lists to storage

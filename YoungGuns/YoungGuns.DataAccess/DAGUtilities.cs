@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YoungGuns.DataAccess.Contracts;
 using YoungGuns.Shared;
@@ -46,6 +47,23 @@ namespace YoungGuns.DataAccess
 
             // Execute the insert operation.
             await table.ExecuteAsync(insertOperation);
+        }
+
+        public static void FixCalcFormulaMappings(PostTaxSystemRequest request)
+        {
+            // build lookup table
+            Dictionary<string, uint> reverseFieldLookup = new Dictionary<string, uint>();
+            foreach(var field in request.taxsystem_fields)
+                reverseFieldLookup[$"[{field.field_title}]"] = field.field_id;
+
+            for(int i = 0; i < request.taxsystem_fields.Count; i++)
+            {
+                foreach (Match m in Regex.Matches(request.taxsystem_fields[i].field_calculation, "\\[.*?\\]"))
+                {
+                    request.taxsystem_fields[i].field_calculation =
+                        request.taxsystem_fields[i].field_calculation.Replace(m.Value, reverseFieldLookup[m.Value].ToString());
+                }
+            }
         }
 
         public static async Task<CloudTable> GetAdjacencyListTable(string taxSystemName)

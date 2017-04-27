@@ -63,10 +63,6 @@
       <HintPath>..\packages\Microsoft.ServiceFabric.Data.2.5.216\lib\net45\Microsoft.ServiceFabric.Data.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ServiceFabric.FabricTransport, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
-      <HintPath>..\packages\Microsoft.ServiceFabric.FabricTransport.Internal.2.5.216\lib\net45\Microsoft.ServiceFabric.FabricTransport.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.ServiceFabric.Internal, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <HintPath>..\packages\Microsoft.ServiceFabric.5.5.216\lib\net45\Microsoft.ServiceFabric.Internal.dll</HintPath>
       <Private>True</Private>
@@ -77,10 +73,6 @@
     </Reference>
     <Reference Include="Microsoft.ServiceFabric.Services, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <HintPath>..\packages\Microsoft.ServiceFabric.Services.2.5.216\lib\net45\Microsoft.ServiceFabric.Services.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.ServiceFabric.Services.Remoting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
-      <HintPath>..\packages\Microsoft.ServiceFabric.Services.Remoting.2.5.216\lib\net45\Microsoft.ServiceFabric.Services.Remoting.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -115,7 +107,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -135,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldController.cs" />
-    <Compile Include="Controllers\ReturnSessionController.cs" />
     <Compile Include="Controllers\TaxSystemController.cs" />
     <Compile Include="IOwinAppBuilder.cs" />
     <Compile Include="Map\AutomapperConfig.cs" />
@@ -165,13 +155,13 @@
       <Project>{ad1890c7-2ca5-406a-b71e-47ce3c98a033}</Project>
       <Name>YoungGuns.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\YoungGuns.Data\YoungGuns.Data.csproj">
+      <Project>{189b5903-db09-4f18-a25b-7acc4802cd28}</Project>
+      <Name>YoungGuns.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">
       <Project>{a48455e6-7071-4f78-93ed-e1eba6738da0}</Project>
       <Name>YoungGuns.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\YoungGuns.WebApi\YoungGuns.WebApi.csproj">
-      <Project>{9bd5b9dd-7d3e-45b3-aeb6-763ec87ba6c4}</Project>
-      <Name>YoungGuns.WebApi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
