@@ -30,19 +30,13 @@ namespace YoungGuns.CalcService
             _dbHelper = new DbHelper();
         }
 
-        public async Task LoadTaxSystem(string taxSystemId)
+        public void LoadTaxSystem(string taxSystemId)
         {    
             // load tax system    
             this.TaxSystem = _dbHelper.GetTaxSystem(taxSystemId);
             
             // reinitialize DAG (loads field formulas too)
             _dag = new CalcDAG(this.TaxSystem);
-
-            // load AdjacencyLists
-            _dag.AdjacencyList = await DbHelper.GetCalcAdjacencyList(TaxSystem.Name);
-
-            // load TopoList for this tax system
-            _dag.TopoList = _dbHelper.GetTopoList(TaxSystem.Id);
         }
 
         /// <summary>
