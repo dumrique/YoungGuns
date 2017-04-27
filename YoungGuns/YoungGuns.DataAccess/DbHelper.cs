@@ -69,6 +69,14 @@ namespace YoungGuns.DataAccess
             var result = await _client.UpsertDocumentAsync(uri, topoList);
         }
 
+        public List<uint> GetReturnChangesetFields(string returnId, uint returnVersion)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var query = _client.CreateDocumentQuery<ReturnSnapshot>(uri);
+            List<ReturnSnapshot> result = query.Where(item => item.Version.Equals($"{returnId}_{returnVersion}")).ToList();
+            return result.FirstOrDefault()?.ChangesetFields;
+        }
+
         public static async Task<Dictionary<uint, List<uint>>> GetCalcAdjacencyList(string taxSystemName)
         {
             CloudTable table = await DAGUtilities.GetAdjacencyListTable(taxSystemName);

@@ -17,6 +17,12 @@ namespace YoungGuns.Business
         public TaxSystem TaxSystem { get; set; }
 
         /// <summary>
+        /// Version of the FieldValues snapshot currently held in this DAG
+        /// </summary>
+        public uint ReturnVersion { get; set; }
+
+
+        /// <summary>
         /// Adjacency list defining field dependencies
         /// </summary> 
         public Dictionary<uint, List<uint>> AdjacencyList { get; set; }

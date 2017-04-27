@@ -95,6 +95,25 @@ namespace YoungGuns.DataAccess
             return tableClient.GetTableReference($"TaxSystemAdjacencyLists_{taxSystemName}");
         }
 
+        /// <summary>
+        /// Returns true if the 2 changesets have a potential merge conflict.
+        /// </summary>
+        /// <param name="changeset1"></param>
+        /// <param name="changeset2"></param>
+        /// <returns></returns>
+        public static async Task<bool> CheckForMergeConflicts(string taxSystemName, CalcChangeset changeset1, CalcChangeset changeset2)
+        {
+            List<uint> calcFields1 = new List<uint>();
+            List<uint> calcFields2 = new List<uint>();
 
+            // get list of fields to calc in DAG from each changeset
+            foreach (var key in changeset1.NewValues.Keys)
+                calcFields1.AddRange(await DbHelper.GetDependentFields(taxSystemName, key));
+            foreach (var key in changeset2.NewValues.Keys)
+                calcFields2.AddRange(await DbHelper.GetDependentFields(taxSystemName, key));
+
+            // compare lists to find commonality
+            return calcFields1.Intersect(calcFields2).Count() > 0;
+        }
     }
 }

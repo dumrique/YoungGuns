@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YoungGuns.Data;
 
 namespace YoungGuns.Shared
 {
@@ -12,7 +11,7 @@ namespace YoungGuns.Shared
     {
         Task LoadTaxSystem(string taxSystemId);
 
-        void Calculate(CalcChangeset changeset);
+        Task<bool?> Calculate(CalcChangeset changeset);
 
     }
 }

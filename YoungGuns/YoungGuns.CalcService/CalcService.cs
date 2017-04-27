@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
-using YoungGuns.Data;
 using YoungGuns.Shared;
 using YoungGuns.DataAccess;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
+using YoungGuns.Business;
 
 namespace YoungGuns.CalcService
 {
@@ -45,15 +45,36 @@ namespace YoungGuns.CalcService
             _dag.TopoList = _dbHelper.GetTopoList(TaxSystem.Id);
         }
 
-        public void Calculate(CalcChangeset changeset)
+        /// <summary>
+        /// Returns     null for good calc, 
+        ///             true for merge conflict,
+        ///             false for auto-merge and good calc.
+        /// </summary>
+        /// <param name="changeset"></param>
+        /// <returns></returns>
+        public async Task<bool?> Calculate(CalcChangeset changeset)
         {
+            bool? retVal = null;
             if (_dag == null)
             {
-                // TODO Load DAG
-                //_dag.
+                // TODO: loop and wait till we DO have a _dag?
+                //       or perhaps just throw and exception
             }
 
+            // TODO: get current version of most recent ReturnSnapshot.
+            //       if changeset.BaseVersion is different, 
+            //       run DAGUtilies.CheckForMergeConflicts.
+            if (_dag.ReturnVersion != changeset.BaseVersion)
+            {
+                // retrieve the last changeset from DocumentDb
+                CalcChangeset lastChangeset = DbHelper.GetReturnChangeset(changeset.ReturnId, _dag.ReturnVersion);
+
+                return await DAGUtilities.CheckForMergeConflicts(TaxSystem.Name, lastChangeset, changeset);
+            }
+
+            // otherwise, process the changeset
             _dag.ProcessChangeset(changeset);
+            return retVal;
         }
 
         /// <summary>
