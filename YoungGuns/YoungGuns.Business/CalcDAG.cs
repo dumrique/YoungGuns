@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using YoungGuns.Data.Contracts;
 using YoungGuns.Shared;
+using YoungGuns.DataAccess;
 
-namespace YoungGuns.Data
+namespace YoungGuns.Business
 {
     public class CalcDAG
     {
@@ -49,14 +47,14 @@ namespace YoungGuns.Data
             FieldValues = new Dictionary<uint, float>();
 
             //Load calc adjacency list from table storage
-            AdjacencyList = GetCalcAdjacencyList();            
+            AdjacencyList = DbHelper.GetCalcAdjacencyList(taxSystem.Name).GetAwaiter().GetResult();
 
             //Load field formulas from TaxSystem
             FieldFormulas = new Dictionary<uint, string>();
             foreach (var field in taxSystem.Fields.ToList())
             {
                 FieldFormulas[field.field_id] = field.field_calculation;
-            }            
+            }
         }
 
         public async void ProcessChangeset(CalcChangeset changeset)
@@ -70,7 +68,7 @@ namespace YoungGuns.Data
 
                 // 2. traverse graph up from each changeset field
                 //    to create a list of fields to update
-                List<uint> depList = await GetDependentFields(fieldId);
+                List<uint> depList = await DbHelper.GetDependentFields(TaxSystem.Name, fieldId);
 
                 // 3. merge this dictionary into the master dictionary for this changeset
                 foreach (uint id in depList)
@@ -92,37 +90,6 @@ namespace YoungGuns.Data
 
             // update calced value in the dictionary
             FieldValues[fieldId] = (float)formula.Evaluate();
-        }
-
-        private async Task<List<uint>> GetDependentFields(uint fieldId)
-        {
-            CloudTable table = await DAGUtilities.GetAdjacencyListTable(TaxSystem.Name);
-            // Construct the query operation for the field list for the given field
-            TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>("leaf", fieldId.ToString());
-
-            // Execute the retrieve operation.
-            TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
-            return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
-        }
-
-        private Dictionary<uint, List<uint>> GetCalcAdjacencyList()
-        {
-            CloudTable table = DAGUtilities.GetAdjacencyListTable(TaxSystem.Name).GetAwaiter().GetResult();
-
-            TableQuery<AdjacencyListItem> query = new TableQuery<AdjacencyListItem>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "calc"));
-
-            var listItems = table.ExecuteQuery(query).ToList();
-            var dict = new Dictionary<uint, List<uint>>();
-            foreach (var li in listItems)
-            {
-                uint id;
-                if (uint.TryParse(li.RowKey, out id))
-                    dict[id] = li.DependentFields;
-                else
-                    throw new Exception($"Invalid Field Id: {li.RowKey}");
-            }
-            return dict;
         }
     }       
 }

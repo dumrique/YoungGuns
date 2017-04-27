@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoungGuns.Shared", "YoungGuns.Shared\YoungGuns.Shared.csproj", "{A48455E6-7071-4F78-93ED-E1EBA6738DA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoungGuns.Data", "YoungGuns.Data\YoungGuns.Data.csproj", "{189B5903-DB09-4F18-A25B-7ACC4802CD28}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoungGuns.Business", "YoungGuns.Business\YoungGuns.Business.csproj", "{8621AB28-645E-4616-9804-53CB372901EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoungGuns.WebApi", "YoungGuns.WebApi\YoungGuns.WebApi.csproj", "{9BD5B9DD-7D3E-45B3-AEB6-763EC87BA6C4}"
@@ -35,14 +33,6 @@ Global
 		{A48455E6-7071-4F78-93ED-E1EBA6738DA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A48455E6-7071-4F78-93ED-E1EBA6738DA0}.Release|x64.ActiveCfg = Release|Any CPU
 		{A48455E6-7071-4F78-93ED-E1EBA6738DA0}.Release|x64.Build.0 = Release|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Debug|x64.Build.0 = Debug|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Release|Any CPU.Build.0 = Release|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Release|x64.ActiveCfg = Release|Any CPU
-		{189B5903-DB09-4F18-A25B-7ACC4802CD28}.Release|x64.Build.0 = Release|Any CPU
 		{8621AB28-645E-4616-9804-53CB372901EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8621AB28-645E-4616-9804-53CB372901EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8621AB28-645E-4616-9804-53CB372901EE}.Debug|x64.ActiveCfg = Debug|Any CPU

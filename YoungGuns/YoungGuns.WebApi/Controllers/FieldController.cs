@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using YoungGuns.Data;
+using YoungGuns.Business;
 using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 
