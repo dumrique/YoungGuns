@@ -34,7 +34,7 @@ namespace YoungGuns.DataAccess
             return collection.ToList();
         }
 
-        public async Task<string> InsertTaxSystem(TaxSystem system)
+        public async Task<string> UpsertTaxSystem(TaxSystem system)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
             var result = await _client.UpsertDocumentAsync(uri, system);
