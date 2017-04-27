@@ -77,5 +77,6 @@ namespace YoungGuns.Data
             return tableClient.GetTableReference($"TaxSystemAdjacencyLists_{taxSystemName}");
         }
 
+
     }
 }
