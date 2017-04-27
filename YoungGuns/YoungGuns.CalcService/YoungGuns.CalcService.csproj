@@ -93,6 +93,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\YoungGuns.DataAccess\YoungGuns.DataAccess.csproj">
+      <Project>{AD1890C7-2CA5-406A-B71E-47CE3C98A033}</Project>
+      <Name>YoungGuns.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YoungGuns.Data\YoungGuns.Data.csproj">
       <Project>{189B5903-DB09-4F18-A25B-7ACC4802CD28}</Project>
       <Name>YoungGuns.Data</Name>

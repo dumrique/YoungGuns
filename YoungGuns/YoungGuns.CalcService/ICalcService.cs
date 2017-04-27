@@ -11,6 +11,6 @@ namespace YoungGuns.CalcService
     public interface ICalcService
     {
         TaxSystem GetLoadedTaxSystem();
-        void Calculate(CalcChangeset changeset);
+        void Calculate(CalcChangeset changeset, string taxSystemId);
     }
 }

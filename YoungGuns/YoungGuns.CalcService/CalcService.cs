@@ -9,6 +9,7 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using YoungGuns.Data;
 using YoungGuns.Shared;
+using YoungGuns.DataAccess;
 
 namespace YoungGuns.CalcService
 {
@@ -29,11 +30,15 @@ namespace YoungGuns.CalcService
             return _taxSystem;
         }
 
-        public void Calculate(CalcChangeset changeset)
+        public void Calculate(CalcChangeset changeset, string taxSystemId)
         {
             if (_dag == null)
             {
-                // TODO Load DAG
+                var dbHelper = new DbHelper();
+                _taxSystem = dbHelper.GetTaxSystem(taxSystemId);
+
+                _dag = new CalcDAG(_taxSystem);
+                // TODO Load from table storage
             }
 
             _dag.ProcessChangeset(changeset);
