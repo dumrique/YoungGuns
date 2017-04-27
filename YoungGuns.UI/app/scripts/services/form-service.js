@@ -63,14 +63,12 @@ angularApp.service('FormService', function FormService($http) {
                 var field = form.taxsystem_fields[i];       
                 field.type = field.field_calculation ? 'calc' : 'info';
             }
-            console.log('POST', form);
             //return $http.post(baseurl + 'api/taxsystem', form);
         },
         getSession: function() {
             return $http.get(baseurl + 'api/returnsession');
            console.log('submitting form', form);
             return $http.post('http://localhost:8100/api/taxsystem', form).then(function(response) {
-                console.log(response.data);
                 return response.data;
             })
         },
@@ -80,8 +78,18 @@ angularApp.service('FormService', function FormService($http) {
                 var field = form.taxsystem_fields[i];
                 requestBody[field.field_id] = field.field_value;
             }
-            console.log('reqoipejfpiojwef', requestBody);
-            return $http.post(baseurl + 'api/taxsystem', form);
+
+            var rvalue = form.taxsystem_fields;
+
+            return $http.get('./static-data/fakecalculateddata.json').then(function(response) {
+                //update the given taxsystem fields with the values returned here.
+
+                Object.keys(response.data).forEach(function(key, index) {
+                    var field = rvalue.filter((f) => f.field_id == key)[0];
+                    field.field_value = response.data[key];
+                })
+                return rvalue;
+            })
         }
     };
 });
