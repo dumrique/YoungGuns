@@ -64,6 +64,26 @@ namespace YoungGuns.DataAccess
             var result = await _client.UpsertDocumentAsync(uri, topoList);
         }
 
+        public static async Task<Dictionary<uint, List<uint>>> GetCalcAdjacencyList(string taxSystemName)
+        {
+            CloudTable table = await DAGUtilities.GetAdjacencyListTable(taxSystemName);
+
+            TableQuery<AdjacencyListItem> query = new TableQuery<AdjacencyListItem>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "calc"));
+
+            var listItems = table.ExecuteQuery(query).ToList();
+            var dict = new Dictionary<uint, List<uint>>();
+            foreach (var li in listItems)
+            {
+                uint id;
+                if (uint.TryParse(li.RowKey, out id))
+                    dict[id] = li.DependentFields;
+                else
+                    throw new Exception($"Invalid Field Id: {li.RowKey}");
+            }
+            return dict;
+        }
+
 
         public string GetConnectionString()
         {

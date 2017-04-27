@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using YoungGuns.Data;
+using YoungGuns.Shared;
 
 namespace YoungGuns.CalcService
 {
@@ -15,9 +17,23 @@ namespace YoungGuns.CalcService
     /// </summary>
     internal sealed class CalcService : StatefulService
     {
+        private CalcDAG _dag;
+
+        public TaxSystem _taxSystem { get; set; }
+
         public CalcService(StatefulServiceContext context)
             : base(context)
         { }
+
+        public void Calculate(CalcChangeset changeset)
+        {
+            if (_dag == null)
+            {
+                // TODO Load DAG
+            }
+
+            _dag.ProcessChangeset(changeset);
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.

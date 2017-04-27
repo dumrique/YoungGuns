@@ -5,6 +5,7 @@ using System.Web.Http;
 using YoungGuns.Business;
 using YoungGuns.DataAccess;
 using YoungGuns.Shared;
+using YoungGuns.Shared.Response;
 using YoungGuns.WebApi.Map;
 
 namespace YoungGuns.WebApi.Controllers
@@ -34,7 +35,8 @@ namespace YoungGuns.WebApi.Controllers
         public IHttpActionResult Get([FromUri]GetTaxSystemRequest request)
         {
             var taxSystem = _dbHelper.GetTaxSystem(request.Id);
-            return Ok(taxSystem);
+            var response = _map.Map<GetTaxSystemResponse>(taxSystem);
+            return Ok(response);
         }
 
         [HttpPost]

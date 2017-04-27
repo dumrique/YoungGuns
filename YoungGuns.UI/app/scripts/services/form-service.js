@@ -52,14 +52,10 @@ angularApp.service('FormService', function FormService($http) {
             }
         ],
         form:function (id) {
-            return $http.get('http://localhost:14522/api/taxsystem/single?id=' + id).then(function (response) {
-                return response.data;
-            });
+            return $http.get('http://localhost:14522/api/taxsystem/single?id=' + id);
         },
         forms: function() {
-            return $http.get('http://localhost:14522/api/taxsystem').then(function(response) {
-                return response.data;
-            })
+            return $http.get('http://localhost:14522/api/taxsystem');
         },
         submit: function(form) {         
             for(var i=0; i < form.taxsystem_fields.length; i++) {
@@ -67,7 +63,7 @@ angularApp.service('FormService', function FormService($http) {
                 field.type = field.field_calculation ? 'calc' : 'info';
             }
            console.log('submitting form', form);
-            return $http.post(baseurl + '/api/taxsystem', form).then(function(response) {
+            return $http.post('http://localhost:14522/api/taxsystem', form).then(function(response) {
                 console.log(response.data);
                 return response.data;
             })

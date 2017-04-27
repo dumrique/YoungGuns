@@ -23,7 +23,8 @@ angularApp.directive('fieldDirective', function($http, $compile) {
             'hidden',
             'password',
             'radio',
-            'calcfield'
+            'calcfield',
+            'calcformula'
         ]
 
         if (__indexOf.call(supported_fields, type) >= 0) {
