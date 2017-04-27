@@ -21,12 +21,13 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService, 
 		 var formData = FormService.form($scope.form.id).then(function (response) {
 		 	$scope.previewMode = !$scope.previewMode;
 		 	$scope.previewFormx = angular.copy(response.data);
+			 $scope.originalData = angular.copy(response.data);
 			 console.log('COPIED DATA', response.data);
 		 });
 	}
 
 	$scope.calculate = function() {
-		var response = FormService.calculate($scope.previewFormx, $scope.originalData);
+		var response = FormService.calculate($scope.previewFormx, $scope.originalData, $scope.session, $scope.form.id);
 		$scope.previewFormx.taxsystem_fields = angular.copy(response);
 	}
 });

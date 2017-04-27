@@ -1,12 +1,12 @@
-<h2>{{ form.taxsystem_name}}</h2>
+<h2>{{ form.name}}</h2>
 
 <div ng-show="!form.submitted">
     <div class="field row">
         <div class="span2">Form ID:</div>
-        <div class="span4">{{ form.taxsystem_id }}</div>
+        <div class="span4">{{ form.id }}</div>
     </div>
     <form name="myForm" id="myForm">
-        <div ng-repeat="field in form.taxsystem_fields">
+        <div ng-repeat="field in form.fields">
             <field-directive field="field">
 
             </field-directive>
@@ -16,7 +16,7 @@
 
 <div ng-show="form.submitted">
     <h3>Submitted Data</h3>
-    <div ng-repeat="field in form.taxsystem_fields">
+    <div ng-repeat="field in form.fields">
         Field Title: {{ field.field_title }} <br>
         Field Value: {{ field.field_value }} <br><br>
     </div>

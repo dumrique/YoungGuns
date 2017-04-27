@@ -68,26 +68,39 @@ angularApp.service('FormService', function FormService($http) {
         getSession: function() {
             return $http.get(baseurl + 'api/returnsession');
         },
-        calculate: function(form, originalForm) {
-            var requestBody = {};
-            for(var i = 0; i < form.taxsystem_fields.length; i++) {
-                var field = form.taxsystem_fields[i];
-                var originalField = originalForm.taxsystem_fields.filter((f) => f.field_id === field.field_id)[0];
-   
-                if(field.field_value !== originalField.field_value) {             
-                    requestBody[field.field_id] = field.field_value;
+        calculate: function(form, originalForm, sessionGuid, taxSystemId) {
+            sessionGuid = sessionGuid.replace(/['"]+/g, '');
+            //console.log('KWEJFOIQEWJFOPIJWEIOFJ', sessionGuid.replace(/['"]+/g, ''));
+            var session = {};
+            $http.post(baseurl + 'api/returnsession', {sessionGuid: sessionGuid, taxSystemId: taxSystemId}).then(function(response) {
+                session.sessionId = sessionGuid;
+                session.returnId = response.data.returnId;
+                session.baseVersion = response.data.baseVersion;
+
+                var requestBody = { newValues: {}, sessionGuid: session.sessionId, returnId: session.returnId, baseVersion: session.baseVersion};
+                for(var i = 0; i < form.fields.length; i++) {
+                    var field = form.fields[i];
+                    var originalField = originalForm.fields.filter((f) => f.field_id === field.field_id)[0];
+    
+                    if(field.field_value !== originalField.field_value) {             
+                        var x = parseInt(field.field_value, 10);
+                        requestBody.newValues[field.field_id] = x;
+                       
+                    }
                 }
-            }
-            var rvalue = form.taxsystem_fields;
+                console.log('NEW VALUES', requestBody.newValues)
+                var rvalue = form.fields;
 
-            return $http.get('./static-data/fakecalculateddata.json').then(function(response) {
-                //update the given taxsystem fields with the values returned here.
+                $http.put(baseurl + 'api/return', requestBody).then(function(response) {
+                    //update the given taxsystem fields with the values returned here.
 
-                Object.keys(response.data.returnSnapshot.fieldValues).forEach(function(key, index) {
-                    var field = rvalue.filter((f) => f.field_id == key)[0];
-                    field.field_value = response.data.returnSnapshot.fieldValues[key];
+                    Object.keys(response.data.returnSnapshot.fieldValues).forEach(function(key, index) {
+                        var field = rvalue.filter((f) => f.field_id == key)[0];
+                        field.field_value = response.data.returnSnapshot.fieldValues[key];
+                    })
+                    console.log('PUT RVALUE IS', rvalue)
+                    return rvalue;
                 })
-                return rvalue;
             })
         }
     };
