@@ -1,7 +1,7 @@
 'use strict';
 
 angularApp.service('FormService', function FormService($http) {
-    const baseurl = 'http://youngguns.azurewebsites.net/';
+    const baseurl = 'http://youngguns.southcentralus.cloudapp.azure.com:80/';
     const localurl = 'http://localhost:14522/';
     var formsJsonPath = './static-data/sample_forms.json';
 
@@ -59,18 +59,14 @@ angularApp.service('FormService', function FormService($http) {
             return $http.get(baseurl + 'api/taxsystem');
         },
         submit: function(form) {         
-            for(var i=0; i < form.taxsystem_fields.length; i++) {
-                var field = form.taxsystem_fields[i];       
-                field.type = field.field_calculation ? 'calc' : 'info';
-            }
-            //return $http.post(baseurl + 'api/taxsystem', form);
+//            for(var i=0; i < form.taxsystem_fields.length; i++) {
+//                var field = form.taxsystem_fields[i];       
+//                field.type = field.field_calculation ? 'calc' : 'info';
+//            }
+            return $http.post(baseurl + 'api/taxsystem', form);
         },
         getSession: function() {
             return $http.get(baseurl + 'api/returnsession');
-           console.log('submitting form', form);
-            return $http.post('http://localhost:8100/api/taxsystem', form).then(function(response) {
-                return response.data;
-            })
         },
         calculate: function(form, originalForm) {
             var requestBody = {};
