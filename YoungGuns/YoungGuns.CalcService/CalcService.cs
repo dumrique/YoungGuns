@@ -30,13 +30,15 @@ namespace YoungGuns.CalcService
             _dbHelper = new DbHelper();
         }
 
-        public void LoadTaxSystem(string taxSystemId)
+        public Task LoadTaxSystem(string taxSystemId)
         {    
             // load tax system    
             this.TaxSystem = _dbHelper.GetTaxSystem(taxSystemId);
             
             // reinitialize DAG (loads field formulas too)
             _dag = new CalcDAG(this.TaxSystem);
+
+            return Task.FromResult(0);
         }
 
         /// <summary>
