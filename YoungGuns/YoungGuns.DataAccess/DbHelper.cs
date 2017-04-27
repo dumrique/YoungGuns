@@ -20,11 +20,11 @@ namespace YoungGuns.DataAccess
 
         public TaxSystem GetTaxSystem(string id)
         {
-            Uri uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
+            Uri uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
             var collection = _client.CreateDocumentQuery<TaxSystem>(uri);
             List<TaxSystem> result = collection.Where(item => item.Id.Equals(id)).ToList();
-            TaxSystem ts = result.First();
-            return ts;
+            TaxSystem taxSystem = result.FirstOrDefault();
+            return taxSystem;
         }
 
         public List<TaxSystem> GetAllTaxSystems()
@@ -39,21 +39,6 @@ namespace YoungGuns.DataAccess
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
             var result = await _client.UpsertDocumentAsync(uri, system);
             return result.Resource.Id;
-        }
-
-        public CalcDAG GetCalcDag(string taxSystemId)
-        {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
-            var collection = _client.CreateDocumentQuery<CalcDAG>(uri);
-            var result = collection.Where(item => item.TaxSystem.Id.Equals(taxSystemId)).ToList();
-            var dag = result.First();
-            return dag;
-        }
-
-        public async Task InsertCalcDag(CalcDAG dag)
-        {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
-            var result = await _client.UpsertDocumentAsync(uri, dag);
         }
 
         public string GetConnectionString()

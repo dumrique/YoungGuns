@@ -9,7 +9,7 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) 
 	
     $scope.form = {};
 
-	$scope.update = function(id) {
-		console.log('update', id);
+	$scope.get = function() {
+		$scope.form = FormService.form($scope.form.id);
 	}
 });

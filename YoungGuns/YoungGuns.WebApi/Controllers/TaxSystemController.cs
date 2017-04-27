@@ -29,13 +29,21 @@ namespace YoungGuns.WebApi.Controllers
             return Ok(taxSystems);
         }
 
+        [HttpGet]
+        [Route("api/taxsystem/single")]
+        public IHttpActionResult Get([FromUri]GetTaxSystemRequest request)
+        {
+            var taxSystem = _dbHelper.GetTaxSystem(request.Id);
+            return Ok(taxSystem);
+        }
+
         [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody]PostTaxSystemRequest request)
         {
             var taxSystem = _map.Map<TaxSystem>(request);
 
             var id = await _dbHelper.UpsertTaxSystem(taxSystem);
-            await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(request);
+            //await AdjacencyListBuilder.ExtractAndStoreAdjacencyList(request);
             
             return Ok(id);
         }

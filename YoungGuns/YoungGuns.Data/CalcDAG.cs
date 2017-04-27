@@ -89,7 +89,7 @@ namespace YoungGuns.Data
         {
             CloudTable table = await DAGUtilities.GetAdjacencyListTable(TaxSystem.Name);
             // Construct the query operation for the field list for the given field
-            TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>(TaxSystem.Name, fieldId.ToString());
+            TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>("leaf", fieldId.ToString());
 
             // Execute the retrieve operation.
             TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
