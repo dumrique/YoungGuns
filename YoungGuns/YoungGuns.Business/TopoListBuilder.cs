@@ -9,7 +9,7 @@ namespace YoungGuns.Business
 {
     public class TopoListBuilder
     {
-        public async static Task ExtractAndStoreAdjencyList(TaxSystemDto dto)
+        public async static Task ExtractAndStoreAdjencyList(PostTaxSystemRequest dto)
         {
             return;
         }

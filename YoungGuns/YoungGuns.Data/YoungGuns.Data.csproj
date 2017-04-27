@@ -80,7 +80,7 @@
     <Compile Include="Contracts\AdjacencyListItem.cs" />
     <Compile Include="DAGUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReturnChangeset.cs" />
+    <Compile Include="CalcChangeset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YoungGuns.Shared\YoungGuns.Shared.csproj">

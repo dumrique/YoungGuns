@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FieldDto.cs" />
-    <Compile Include="TaxSystemDto.cs" />
+    <Compile Include="PostFieldRequest.cs" />
+    <Compile Include="PostTaxSystemRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxSystem.cs" />
   </ItemGroup>
