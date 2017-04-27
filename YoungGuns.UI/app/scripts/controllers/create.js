@@ -87,7 +87,7 @@ angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
     }
 
     $scope.showCalcutionField = function(fieldType){
-        return fieldType === 'calcfield';
+        return fieldType === 'calcformula';
     }
 
 
