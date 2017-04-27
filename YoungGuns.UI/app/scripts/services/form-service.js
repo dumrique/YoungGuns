@@ -84,9 +84,9 @@ angularApp.service('FormService', function FormService($http) {
             return $http.get('./static-data/fakecalculateddata.json').then(function(response) {
                 //update the given taxsystem fields with the values returned here.
 
-                Object.keys(response.data).forEach(function(key, index) {
+                Object.keys(response.data.returnSnapshot.fieldValues).forEach(function(key, index) {
                     var field = rvalue.filter((f) => f.field_id == key)[0];
-                    field.field_value = response.data[key];
+                    field.field_value = response.data.returnSnapshot.fieldValues[key];
                 })
                 return rvalue;
             })
