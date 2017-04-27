@@ -31,7 +31,7 @@ namespace YoungGuns.Business
         /// Dictionary of calc field values, 
         ///     sorted in topological sort order by calc dependency
         /// </summary>
-        public Dictionary<uint, float> FieldValues { get; set; }
+        public Dictionary<uint, object> FieldValues { get; set; }
 
         /// <summary>
         /// Dictionary of calc field formulas, 
@@ -45,12 +45,13 @@ namespace YoungGuns.Business
         /// </summary>
         public List<uint> TopoList { get; set; }
 
+        private DbHelper _dbHelper;
 
         public CalcDAG(TaxSystem taxSystem)
         {
             TaxSystem = taxSystem;
 
-            FieldValues = new Dictionary<uint, float>();
+            FieldValues = new Dictionary<uint, object>();
 
             //Load calc adjacency list from table storage
             AdjacencyList = DbHelper.GetCalcAdjacencyList(taxSystem.Name).GetAwaiter().GetResult();
@@ -62,14 +63,13 @@ namespace YoungGuns.Business
                 FieldFormulas[field.field_id] = field.field_calculation;
             }
 
-            var dbHelper = new DbHelper();
-            TopoList = dbHelper.GetTopoList(TaxSystem.Id);
+            _dbHelper = new DbHelper();
+            TopoList = _dbHelper.GetTopoList(TaxSystem.Id);
         }
 
-        public async void ProcessChangeset(CalcChangeset changeset)
+        public async Task<ReturnSnapshot> ProcessChangeset(CalcChangeset changeset)
         {
-            SortedList<int, uint> fieldsToUpdate = new SortedList<int, uint>();  // key: topo index, value: fieldId
-
+            SortedList<int, uint> fieldsToUpdate = new SortedList<int, uint>();  // key: topo index, value: fieldId            
             Parallel.ForEach(changeset.NewValues.Keys, async (fieldId) =>
             {
                 // 1. update field values from the changeset itself
@@ -87,6 +87,17 @@ namespace YoungGuns.Business
             // 4. Calc the necessary fields in order
             foreach (var depFieldId in fieldsToUpdate.Values)
                 await CalcSingleField(depFieldId);
+
+            var returnSnapshot = new ReturnSnapshot()
+            {
+                ReturnId = changeset.ReturnId,
+                Version = changeset.BaseVersion++,
+                ChangesetFields = changeset.NewValues.Keys.ToList(),
+                FieldValues = FieldValues
+            };
+
+            await _dbHelper.CreateReturnSnapshot(returnSnapshot);
+            return returnSnapshot;
         }
 
         private async Task CalcSingleField(uint fieldId)

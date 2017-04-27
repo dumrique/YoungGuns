@@ -4,14 +4,10 @@ using System.Web.Http;
 using YoungGuns.Business;
 using YoungGuns.DataAccess;
 using YoungGuns.Shared;
-using Microsoft.ServiceFabric.Services;
-using Microsoft.ServiceFabric.Services.Remoting;
-using Microsoft.ServiceFabric.Services.Remoting.Client;
-using YoungGuns.CalcService;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace YoungGuns.WebApi.Controllers
+namespace YoungGuns.WebApiService.Controllers
 {
     [Route("api/field")]
     public class FieldController : ApiController
@@ -29,24 +25,20 @@ namespace YoungGuns.WebApi.Controllers
         /// <summary>
         /// Post data into a field and calc
         /// </summary>
-        /// <param name="fieldRequest"></param>
+        /// <param name="field"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> Post([FromBody]PostFieldRequest fieldRequest)
+        public async Task<IHttpActionResult> Post([FromBody]PostFieldRequest field)
         {
             CalcChangeset changeset = new CalcChangeset()   // TODO Add BaseVersion, Owner, ReturnId
             {
                 NewValues = new Dictionary<uint, float>()
                 {
-                    { fieldRequest.field_id, fieldRequest.field_value }
+                    { field.field_id, field.field_value }
                 }
             };
-            // TODO Look through each CalcService, checking the TaxSystem that is loaded into the CalcService
-            // If CalcService.GetLoadedTaxSystem == null || CalcService.GetLoadedTaxSystem == fieldRequest.taxsystem_name
-            // Then we can calc here, otherwise find another to load the tax system into or reuse
 
-            //ICalcService calcService = ServiceProxy.Create<ICalcService>();
-            _dag.ProcessChangeset(changeset);
+            //_dag.ProcessChangeset(changeset);
             return Ok();
         }
     }

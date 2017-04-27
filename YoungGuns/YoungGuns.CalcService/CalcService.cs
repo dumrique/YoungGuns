@@ -46,7 +46,7 @@ namespace YoungGuns.CalcService
         /// </summary>
         /// <param name="changeset"></param>
         /// <returns></returns>
-        public async Task<bool?> Calculate(CalcChangeset changeset)
+        public async Task<CalcResult> Calculate(CalcChangeset changeset)
         {
             bool? retVal = null;
             if (_dag == null)
@@ -61,14 +61,19 @@ namespace YoungGuns.CalcService
             if (_dag.ReturnVersion != changeset.BaseVersion)
             {
                 // retrieve the last changeset from DocumentDb
-                CalcChangeset lastChangeset = _dbHelper.GetReturnChangeset(changeset.ReturnId, _dag.ReturnVersion);
+                var lastChangesetFields = _dbHelper.GetReturnChangesetFields(changeset.ReturnId, _dag.ReturnVersion);
 
-                return await DAGUtilities.CheckForMergeConflicts(TaxSystem.Name, lastChangeset, changeset);
+                retVal = await DAGUtilities.CheckForMergeConflicts(TaxSystem.Name, lastChangesetFields, changeset.NewValues.Keys.ToList());
+                if (retVal == true)
+                    return new CalcResult() { MergeResult = true };
             }
 
             // otherwise, process the changeset
-            _dag.ProcessChangeset(changeset);
-            return retVal;
+            return new CalcResult()
+            {
+                MergeResult = retVal,
+                ReturnSnapshot = await _dag.ProcessChangeset(changeset)
+            };
         }
 
         /// <summary>

@@ -71,15 +71,21 @@ namespace YoungGuns.DataAccess
 
         public List<uint> GetReturnChangesetFields(string returnId, uint returnVersion)
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
-            var query = _client.CreateDocumentQuery<ReturnSnapshot>(uri);
-            List<ReturnSnapshot> result = query.Where(item => item.Version.Equals($"{returnId}_{returnVersion}")).ToList();
-            return result.FirstOrDefault()?.ChangesetFields;
+            return GetReturnSnapshot(returnId, returnVersion)?.ChangesetFields;
         }
 
-        public CalcChangeset GetReturnChangeset(string returnId, uint returnVersion)
+        public ReturnSnapshot GetReturnSnapshot(string returnId, uint returnVersion)
         {
-            throw new NotImplementedException();
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
+            var query = _client.CreateDocumentQuery<ReturnSnapshot>(uri);
+            return query.FirstOrDefault(item => item.ReturnId.Equals(returnId) && item.Version.Equals(returnVersion));
+        }
+
+        public async Task<string> CreateReturnSnapshot(ReturnSnapshot returnSnapshot)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(ReturnSnapshot).Name);
+            var result = await _client.CreateDocumentAsync(uri, returnSnapshot);
+            return result.Resource.Id;
         }
 
         public static async Task<Dictionary<uint, List<uint>>> GetCalcAdjacencyList(string taxSystemName)

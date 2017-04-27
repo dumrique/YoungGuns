@@ -9,8 +9,10 @@ namespace YoungGuns.Shared
 {
     public class ReturnSnapshot
     {
+        [JsonProperty("returnId")]
+        public string ReturnId { get; set; }
         [JsonProperty("version")]
-        public int Version { get; set; }
+        public uint Version { get; set; }
         [JsonProperty("changesetFields")]
         public List<uint> ChangesetFields { get; set; }
         [JsonProperty("fieldValues")]
