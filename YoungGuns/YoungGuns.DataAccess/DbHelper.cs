@@ -20,11 +20,11 @@ namespace YoungGuns.DataAccess
 
         public TaxSystem GetTaxSystem(string id)
         {
-            Uri uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
+            Uri uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
             var collection = _client.CreateDocumentQuery<TaxSystem>(uri);
             List<TaxSystem> result = collection.Where(item => item.Id.Equals(id)).ToList();
-            TaxSystem ts = result.First();
-            return ts;
+            TaxSystem taxSystem = result.FirstOrDefault();
+            return taxSystem;
         }
 
         public List<TaxSystem> GetAllTaxSystems()
