@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using YoungGuns.Data;
+using YoungGuns.Business;
 using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 
@@ -12,14 +12,14 @@ namespace YoungGuns.WebApi.Controllers
     [Route("api/field")]
     public class FieldController : ApiController
     {
-        //private readonly TaxSystem _taxSystem;
-        //private readonly CalcDAG _dag;
-        //private readonly DbHelper _dbHelper;
+        private readonly TaxSystem _taxSystem;
+        private readonly CalcDAG _dag;
+        private readonly DbHelper _dbHelper;
 
-        public FieldController(string taxSystemId)
+        public FieldController()
         {
-            //_dbHelper = new DbHelper();
-            //_dag = _dbHelper.GetCalcDag(taxSystemId);
+            _dbHelper = new DbHelper();
+            //_dag = new CalcDAG(_dbHelper.GetTaxSystem(taxSystemId));
         }
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace YoungGuns.WebApi.Controllers
                     { field.field_id, field.field_value }
                 }
             };
-            
-            //_dag.ProcessChangeset(changeset);
+
+            _dag.ProcessChangeset(changeset);
             return Ok();
         }
     }
