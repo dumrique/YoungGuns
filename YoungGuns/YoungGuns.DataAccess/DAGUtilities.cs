@@ -55,13 +55,14 @@ namespace YoungGuns.DataAccess
             Dictionary<string, uint> reverseFieldLookup = new Dictionary<string, uint>();
             foreach(var field in request.taxsystem_fields)
                 reverseFieldLookup[$"[{field.field_title}]"] = field.field_id;
+            var calcNodes = request.taxsystem_fields.Where(f => f.field_type == "calcformula").ToList();
 
-            for(int i = 0; i < request.taxsystem_fields.Count; i++)
+            foreach(var node in calcNodes)
             {
-                foreach (Match m in Regex.Matches(request.taxsystem_fields[i].field_calculation, "\\[.*?\\]"))
+                var r = request.taxsystem_fields.FirstOrDefault(f => f.field_id == node.field_id);
+                foreach (Match m in Regex.Matches(node.field_calculation, "\\[.*?\\]"))
                 {
-                    request.taxsystem_fields[i].field_calculation =
-                        request.taxsystem_fields[i].field_calculation.Replace(m.Value, reverseFieldLookup[m.Value].ToString());
+                    r.field_calculation = r.field_calculation.Replace(m.Value, $"[{reverseFieldLookup[m.Value].ToString()}]");
                 }
             }
         }
