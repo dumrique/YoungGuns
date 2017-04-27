@@ -67,7 +67,7 @@ namespace YoungGuns.CalcService
             if (_dag.ReturnVersion != changeset.BaseVersion)
             {
                 // retrieve the last changeset from DocumentDb
-                CalcChangeset lastChangeset = DbHelper.GetReturnChangeset(changeset.ReturnId, _dag.ReturnVersion);
+                CalcChangeset lastChangeset = _dbHelper.GetReturnChangeset(changeset.ReturnId, _dag.ReturnVersion);
 
                 return await DAGUtilities.CheckForMergeConflicts(TaxSystem.Name, lastChangeset, changeset);
             }

@@ -77,6 +77,11 @@ namespace YoungGuns.DataAccess
             return result.FirstOrDefault()?.ChangesetFields;
         }
 
+        public CalcChangeset GetReturnChangeset(string returnId, uint returnVersion)
+        {
+            throw new NotImplementedException();
+        }
+
         public static async Task<Dictionary<uint, List<uint>>> GetCalcAdjacencyList(string taxSystemName)
         {
             CloudTable table = await DAGUtilities.GetAdjacencyListTable(taxSystemName);

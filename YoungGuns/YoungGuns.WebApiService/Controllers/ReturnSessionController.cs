@@ -39,7 +39,7 @@ namespace YoungGuns.WebApiService.Controllers
                 new StatefulServiceDescription
                 {
                     ApplicationName = new Uri("fabric:/YoungGunsApp"),
-                    ServiceName = new Uri($"fabric:/YoungGuns/CalcService_{sessionGuid}"),
+                    ServiceName = new Uri($"fabric:/YoungGunsApp/CalcService_{sessionGuid}"),
                     ServiceTypeName = "CalcServiceType",
                     PartitionSchemeDescription = new SingletonPartitionSchemeDescription(),
                     MinReplicaSetSize = 2,
