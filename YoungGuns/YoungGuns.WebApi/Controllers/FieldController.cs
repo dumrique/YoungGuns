@@ -19,7 +19,7 @@ namespace YoungGuns.WebApi.Controllers
         public FieldController(string taxSystemId)
         {
             _dbHelper = new DbHelper();
-            _dag = _dbHelper.GetCalcDag(taxSystemId);
+            _dag = new CalcDAG(_dbHelper.GetTaxSystem(taxSystemId));
         }
 
         [HttpPost]

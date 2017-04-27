@@ -41,21 +41,6 @@ namespace YoungGuns.DataAccess
             return result.Resource.Id;
         }
 
-        public CalcDAG GetCalcDag(string taxSystemId)
-        {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
-            var collection = _client.CreateDocumentQuery<CalcDAG>(uri);
-            var result = collection.Where(item => item.TaxSystem.Id.Equals(taxSystemId)).ToList();
-            var dag = result.First();
-            return dag;
-        }
-
-        public async Task UpsertCalcDag(CalcDAG dag)
-        {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
-            var result = await _client.UpsertDocumentAsync(uri, dag);
-        }
-
         public string GetConnectionString()
         {
             return "AccountEndpoint=https://youngguns.documents.azure.com:443/;AccountKey=F7a8aOEM1XHZLkkxJBjY9gyAMM5kjWxj1mNgIYxN2DU409oV3NoNEVpEzpwqTc6PPK6ZXWhGHZI6hqgCSjsgtA==;";
