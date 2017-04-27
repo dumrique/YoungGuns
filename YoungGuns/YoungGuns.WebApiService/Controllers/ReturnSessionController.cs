@@ -60,14 +60,15 @@ namespace YoungGuns.WebApiService.Controllers
         /// <param name="session"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> Post([FromBody]PostReturnSessionRequest session)
+        public async Task<IHttpActionResult> Post([FromBody] PostReturnSessionRequest session)
         {
             // get reference to the right CalcService
-            var calcService = ServiceProxy.Create<ICalcService>(new Uri($"fabric:/YoungGunsApp/CalcService_{session.SessionGuid}"));
+            var calcService =
+                ServiceProxy.Create<ICalcService>(new Uri($"fabric:/YoungGunsApp/CalcService_{session.SessionGuid}"));
             // set TaxSystem on the CalcService
-            calcService.LoadTaxSystem(session.TaxSystemId);
+            await calcService.LoadTaxSystem(session.TaxSystemId);
 
-            return Ok(session);
+            return Ok(new {returnId = Guid.NewGuid().ToString(), baseVersion = 0});
         }
     }
 }

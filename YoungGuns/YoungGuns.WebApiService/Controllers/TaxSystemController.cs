@@ -44,6 +44,9 @@ namespace YoungGuns.WebApiService.Controllers
 
             var id = await _dbHelper.UpsertTaxSystem(taxSystem);
 
+            // fix text-to-uint mapping for field calc formulas
+            DAGUtilities.FixCalcFormulaMappings(request);
+
             // save adjacency lists to storage
             Dictionary<uint, List<uint>> topoInput = await AdjacencyListBuilder.ExtractAndStoreAdjacencyLists(request);
             await TopoListBuilder.BuildAndStoreTopoList(id, topoInput);

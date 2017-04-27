@@ -9,7 +9,7 @@ namespace YoungGuns.Shared
 {
     public interface ICalcService : IService
     {
-        void LoadTaxSystem(string taxSystemId);
+        Task LoadTaxSystem(string taxSystemId);
 
         Task<CalcResult> Calculate(CalcChangeset changeset);
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using YoungGuns.DataAccess.Contracts;
 using YoungGuns.Shared;
@@ -25,6 +26,18 @@ namespace YoungGuns.DataAccess
             };
 
             // Create the TableOperation object that inserts the adjacency list item.
+            TableQuery<AdjacencyListItem> query = new TableQuery<AdjacencyListItem>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "leaf"))
+                .Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, leafFieldId.ToString()));
+
+            var item = table.ExecuteQuery(query).FirstOrDefault();
+            if (item != null)
+            {
+                TableOperation delOperation = TableOperation.Delete(item);
+                await table.ExecuteAsync(delOperation);
+            }
+
+            // Create the TableOperation object that inserts the adjacency list item.
             TableOperation insertOperation = TableOperation.Insert(adjLI);
 
             // Execute the insert operation.
@@ -43,8 +56,19 @@ namespace YoungGuns.DataAccess
             };
 
             // Create the TableOperation object that inserts the adjacency list item.
-            TableOperation insertOperation = TableOperation.Insert(adjLI);
+            TableQuery<AdjacencyListItem> query = new TableQuery<AdjacencyListItem>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "calc"))
+                .Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, field_id.ToString()));
 
+            var item = table.ExecuteQuery(query).FirstOrDefault();
+            if(item != null)
+            {
+                TableOperation delOperation = TableOperation.Delete(item);
+                await table.ExecuteAsync(delOperation);
+            }
+
+            TableOperation insertOperation = TableOperation.Insert(adjLI);
+            
             // Execute the insert operation.
             await table.ExecuteAsync(insertOperation);
         }
@@ -55,13 +79,14 @@ namespace YoungGuns.DataAccess
             Dictionary<string, uint> reverseFieldLookup = new Dictionary<string, uint>();
             foreach(var field in request.taxsystem_fields)
                 reverseFieldLookup[$"[{field.field_title}]"] = field.field_id;
+            var calcNodes = request.taxsystem_fields.Where(f => f.field_type == "calcformula").ToList();
 
-            for(int i = 0; i < request.taxsystem_fields.Count; i++)
+            foreach(var node in calcNodes)
             {
-                foreach (Match m in Regex.Matches(request.taxsystem_fields[i].field_calculation, "\\[.*?\\]"))
+                var r = request.taxsystem_fields.FirstOrDefault(f => f.field_id == node.field_id);
+                foreach (Match m in Regex.Matches(node.field_calculation, "\\[.*?\\]"))
                 {
-                    request.taxsystem_fields[i].field_calculation =
-                        request.taxsystem_fields[i].field_calculation.Replace(m.Value, reverseFieldLookup[m.Value].ToString());
+                    r.field_calculation = r.field_calculation.Replace(m.Value, $"[{reverseFieldLookup[m.Value].ToString()}]");
                 }
             }
         }
@@ -71,7 +96,14 @@ namespace YoungGuns.DataAccess
             CloudTable table = GetAdjacencyTableListTableReference(taxSystemName);
 
             // Create the table if it doesn't exist.
-            await table.CreateIfNotExistsAsync();
+            try
+            {
+                await table.CreateIfNotExistsAsync();
+            }
+            catch (Exception e)
+            {
+                
+            }
 
             return table;
         }
@@ -92,7 +124,7 @@ namespace YoungGuns.DataAccess
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
             // Retrieve a reference to the table.
-            return tableClient.GetTableReference($"TaxSystemAdjacencyLists_{taxSystemName}");
+            return tableClient.GetTableReference($"TaxSystemAdjacencyLists{taxSystemName}");
         }
 
         /// <summary>
