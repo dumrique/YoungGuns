@@ -1,7 +1,7 @@
 <div class="text-center">
 	<div class="add-field">
 		<select name="repeatSelect" id="repeatSelect" ng-model="form.id" ng-change="get()">>
-      		<option ng-repeat="form in forms" value="{{form.taxsystem_id}}">{{form.taxsystem_name}}</option>
+      		<option ng-repeat="form in forms" value="{{form.id}}">{{form.name}}</option>
 		</select>
 	</div>
 	<form-directive form="previewFormx"></form-directive>

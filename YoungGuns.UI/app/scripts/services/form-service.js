@@ -78,7 +78,6 @@ angularApp.service('FormService', function FormService($http) {
                     requestBody[field.field_id] = field.field_value;
                 }
             }
-            console.log('requestr body is', requestBody);
             var rvalue = form.taxsystem_fields;
 
             return $http.get('./static-data/fakecalculateddata.json').then(function(response) {
