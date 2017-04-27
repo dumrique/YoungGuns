@@ -46,13 +46,16 @@ namespace YoungGuns.Business
                 //      i.e., we need the list of dependent fields for each field
                 foreach (FieldDto field in leafNodes)
                 {
+                    adjLists[field.field_id] = new List<uint>();
                     foreach (uint depId in adjListsInverse[field.field_id].ToList())
                         BuildAdjListWorker(depId, adjListsInverse, adjListsInverse[field.field_id]);
 
                     await DAGUtilities.StoreLeafAdjacencyListAsync(field.field_id, dto.taxsystem_name, adjListsInverse[field.field_id]);
                 }
 
+                // return the whole ilst of nodes in the graph
                 return adjLists;
+
             }
             catch (Exception e)
             {
