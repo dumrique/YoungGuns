@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using YoungGuns.Data;
 using YoungGuns.Shared;
 using Microsoft.Azure.Documents.Client;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage.Table;
+using YoungGuns.DataAccess.Contracts;
 
 namespace YoungGuns.DataAccess
 {
@@ -41,20 +42,37 @@ namespace YoungGuns.DataAccess
             return result.Resource.Id;
         }
 
-        public CalcDAG GetCalcDag(string taxSystemId)
+        public static async Task<List<uint>> GetDependentFields(string taxSystem, uint fieldId)
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
-            var collection = _client.CreateDocumentQuery<CalcDAG>(uri);
-            var result = collection.Where(item => item.TaxSystem.Id.Equals(taxSystemId)).ToList();
-            var dag = result.First();
-            return dag;
+            CloudTable table = await DAGUtilities.GetAdjacencyListTable(taxSystem);
+            // Construct the query operation for the field list for the given field
+            TableOperation retrieveOperation = TableOperation.Retrieve<AdjacencyListItem>("leaf", fieldId.ToString());
+
+            // Execute the retrieve operation.
+            TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
+            return ((AdjacencyListItem)retrievedResult.Result)?.DependentFields;
         }
 
-        public async Task UpsertCalcDag(CalcDAG dag)
+        public static async Task<Dictionary<uint, List<uint>>> GetCalcAdjacencyList(string taxSystemName)
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
-            var result = await _client.UpsertDocumentAsync(uri, dag);
+            CloudTable table = await DAGUtilities.GetAdjacencyListTable(taxSystemName);
+
+            TableQuery<AdjacencyListItem> query = new TableQuery<AdjacencyListItem>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "calc"));
+
+            var listItems = table.ExecuteQuery(query).ToList();
+            var dict = new Dictionary<uint, List<uint>>();
+            foreach (var li in listItems)
+            {
+                uint id;
+                if (uint.TryParse(li.RowKey, out id))
+                    dict[id] = li.DependentFields;
+                else
+                    throw new Exception($"Invalid Field Id: {li.RowKey}");
+            }
+            return dict;
         }
+
 
         public string GetConnectionString()
         {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using YoungGuns.Data;
+using YoungGuns.Business;
 using YoungGuns.DataAccess;
 using YoungGuns.Shared;
 
@@ -19,7 +19,7 @@ namespace YoungGuns.WebApi.Controllers
         public FieldController(string taxSystemId)
         {
             _dbHelper = new DbHelper();
-            _dag = _dbHelper.GetCalcDag(taxSystemId);
+            _dag = new CalcDAG(_dbHelper.GetTaxSystem(taxSystemId));
         }
 
         [HttpPost]
