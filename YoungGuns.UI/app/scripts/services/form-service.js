@@ -73,6 +73,15 @@ angularApp.service('FormService', function FormService($http) {
                 console.log(response.data);
                 return response.data;
             })
+        },
+        calculate: function(form) {
+            var requestBody = {};
+            for(var i = 0; i < form.taxsystem_fields.length; i++) {
+                var field = form.taxsystem_fields[i];
+                requestBody[field.field_id] = field.field_value;
+            }
+            console.log('reqoipejfpiojwef', requestBody);
+            return $http.post(baseurl + 'api/taxsystem', form);
         }
     };
 });

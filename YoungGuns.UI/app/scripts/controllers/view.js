@@ -1,12 +1,12 @@
 'use strict';
 
-var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) {
+var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService, MockFormService) {
 	$scope.previewMode = false;
 	// FormService.getSession().then(function(response) {
 	// 	// ??
 	// })
 
-	FormService.forms().then(function (response) {
+	MockFormService.forms().then(function (response) {
                 $scope.forms = response.data;
             });
 
@@ -17,18 +17,22 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($scope, FormService) 
     $scope.form = {};
 
 	$scope.get = function() {
-		var formData = FormService.form($scope.form.id).then(function (response) {
+		MockFormService.forms().then(function(response) {
 			$scope.previewMode = !$scope.previewMode;
+			$scope.previewFormx = angular.copy(response.data[0]);
 			
-			$scope.previewFormx = angular.copy(response.data);
-		});
+			console.log($scope.previewFormx)
+		})
+		// var formData = FormService.form($scope.form.id).then(function (response) {
+		// 	$scope.previewMode = !$scope.previewMode;
+
+		// 	$scope.previewFormx = angular.copy(response.data);
+		// });
 	}
 
 	$scope.calculate = function() {
-
-	}
-
-	$scope.calculate = function() {
-		
+		FormService.calculate($scope.previewFormx).then(function(response) {
+			$scope.previewFormx.taxsystem_fields = response.data;
+		})
 	}
 });
