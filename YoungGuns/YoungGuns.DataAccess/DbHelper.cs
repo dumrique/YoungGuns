@@ -101,13 +101,7 @@ namespace YoungGuns.DataAccess
             }
             return dict;
         }
-
-        public static CalcChangeset GetReturnChangeset(string returnId, uint returnVersion)
-        {
-            throw new NotImplementedException();
-        }
-
-
+        
         public string GetConnectionString()
         {
             return "AccountEndpoint=https://youngguns.documents.azure.com:443/;AccountKey=F7a8aOEM1XHZLkkxJBjY9gyAMM5kjWxj1mNgIYxN2DU409oV3NoNEVpEzpwqTc6PPK6ZXWhGHZI6hqgCSjsgtA==;";

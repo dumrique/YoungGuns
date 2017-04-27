@@ -65,7 +65,7 @@ namespace YoungGuns.WebApiService.Controllers
             // get reference to the right CalcService
             var calcService = ServiceProxy.Create<ICalcService>(new Uri($"fabric:/YoungGunsApp/CalcService_{session.SessionGuid}"));
             // set TaxSystem on the CalcService
-            await calcService.LoadTaxSystem(session.TaxSystemId);
+            calcService.LoadTaxSystem(session.TaxSystemId);
 
             return Ok(session);
         }
