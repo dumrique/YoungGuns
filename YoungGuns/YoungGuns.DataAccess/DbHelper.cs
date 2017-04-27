@@ -20,7 +20,7 @@ namespace YoungGuns.DataAccess
 
         public TaxSystem GetTaxSystem(string id)
         {
-            Uri uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
+            Uri uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(TaxSystem).Name);
             var collection = _client.CreateDocumentQuery<TaxSystem>(uri);
             List<TaxSystem> result = collection.Where(item => item.Id.Equals(id)).ToList();
             TaxSystem ts = result.First();
@@ -50,7 +50,7 @@ namespace YoungGuns.DataAccess
             return dag;
         }
 
-        public async Task InsertCalcDag(CalcDAG dag)
+        public async Task UpsertCalcDag(CalcDAG dag)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(DatabaseName, typeof(CalcDAG).Name);
             var result = await _client.UpsertDocumentAsync(uri, dag);
