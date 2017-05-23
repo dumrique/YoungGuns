@@ -17,7 +17,11 @@ namespace YoungGuns.DataAccess
 
         public DbHelper()
         {
-            _client = new DocumentClient(GetEndpointUrl(), GetPrimaryKey());
+            //_client = new DocumentClient(GetEndpointUrl(), GetPrimaryKey());
+            // Connect to the Azure Cosmos DB Emulator running locally
+            _client = new DocumentClient(
+                new Uri("https://localhost:8081"),
+                "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
         }
 
         public TaxSystem GetTaxSystem(string id)
