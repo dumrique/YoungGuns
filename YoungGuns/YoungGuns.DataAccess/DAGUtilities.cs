@@ -131,8 +131,8 @@ namespace YoungGuns.DataAccess
 
         private static string GetConnectionString()
         {
-            //return "DefaultEndpointsProtocol=https;AccountName=youngguns;AccountKey=NGct+PJexXQ0Eby6DhuOQ555dev7V6Z+lciJyunYM6aXVoEvzQD8Ig2FVv5YGiklTlPLaUENU4Cgg4N2pFzY2A==;EndpointSuffix=core.windows.net";
-            return "UseDevelopmentStorage=true";
+            return "DefaultEndpointsProtocol=https;AccountName=youngguns;AccountKey=R2Xm2pQ4/jx5YmLuIXVgCF/l0IwlsZWaMz3JSwEkrADpvrowT+HTZ0S01xmJQ0Mm1Q6FH4UzxZ18isjgI9PXPg==;EndpointSuffix=core.windows.net";
+            //return "UseDevelopmentStorage=true";
         }
 
         /// <summary>

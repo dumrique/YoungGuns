@@ -17,11 +17,11 @@ namespace YoungGuns.DataAccess
 
         public DbHelper()
         {
-            //_client = new DocumentClient(GetEndpointUrl(), GetPrimaryKey());
+            _client = new DocumentClient(GetEndpointUrl(), GetPrimaryKey());
             // Connect to the Azure Cosmos DB Emulator running locally
-            _client = new DocumentClient(
-                new Uri("https://localhost:8081"),
-                "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
+            //_client = new DocumentClient(
+            //    new Uri("https://localhost:8081"),
+            //    "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
         }
 
         public TaxSystem GetTaxSystem(string id)
@@ -132,7 +132,7 @@ namespace YoungGuns.DataAccess
 
         private string GetPrimaryKey()
         {
-            return "F7a8aOEM1XHZLkkxJBjY9gyAMM5kjWxj1mNgIYxN2DU409oV3NoNEVpEzpwqTc6PPK6ZXWhGHZI6hqgCSjsgtA==";
+            return "MvSSeNy98O4nBUr5AUvu7rEt9C1iBKICPfb6q6Qttr5f1nn8pbFzP7PUwu3ycs2HwE7jlqNtaEYXuwjBljMvzw==";
         }
         #endregion
     }
