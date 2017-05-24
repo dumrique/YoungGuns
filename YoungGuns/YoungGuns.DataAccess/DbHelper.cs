@@ -55,7 +55,8 @@ namespace YoungGuns.DataAccess
 
             // Execute the retrieve operation.
             TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
-            return JsonConvert.DeserializeObject<List<uint>>(((AdjacencyListItem)retrievedResult.Result)?.DependentFields);
+            return retrievedResult.Result == null ? new List<uint>() : 
+                JsonConvert.DeserializeObject<List<uint>>(((AdjacencyListItem)retrievedResult.Result)?.DependentFields);
         }
 
         public List<uint> GetTopoList(string taxSystemId)
